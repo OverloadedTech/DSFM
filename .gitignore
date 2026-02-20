@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Runtime data
+*.sqlite3
+logs/
+uploads/
+exports/
+
+# Secrets
+.dsfm_secret_key
+config.toml
+
+# OS
+.DS_Store
+Thumbs.db
