@@ -16,6 +16,8 @@ import sqlite3
 import threading
 import time
 import traceback
+import urllib.request
+import zipfile
 from collections import deque
 from dataclasses import dataclass
 from datetime import datetime, timedelta
@@ -467,13 +469,258 @@ class ActivityLogger:
         )
 
 
+class SyncManager:
+    """Automatic backup & sync to Telegram when significant runtime changes occur."""
+
+    TELEGRAM_FILE_LIMIT = 49 * 1024 * 1024  # 49 MB (bot limit is 50 MB)
+    TELEGRAM_CAPTION_LIMIT = 1024
+    MAX_INDIVIDUAL_FILE = 10 * 1024 * 1024  # 10 MB per upload file
+    EXPORTS_DIR = Path("exports")
+    COOLDOWN_SECONDS = 300  # minimum gap between uploads
+    DEBOUNCE_SECONDS = 30  # wait after last trigger before syncing
+
+    def __init__(
+        self,
+        *,
+        enabled: bool,
+        token: str,
+        user_id: str,
+        db_path: str,
+        config_path: str,
+    ):
+        self.enabled = enabled and bool(token) and bool(user_id)
+        self.token = token
+        self.user_id = user_id
+        self.db_path = db_path
+        self.config_path = config_path
+        self._lock = threading.RLock()
+        self._last_sync_time: float = 0.0
+        self._timer: threading.Timer | None = None
+        self._pending_reasons: list[str] = []
+
+    # ------------------------------------------------------------------
+    def notify(self, reason: str = "") -> None:
+        """Signal a significant change.  Debounces rapid-fire triggers."""
+        if not self.enabled:
+            return
+        with self._lock:
+            if reason and reason not in self._pending_reasons:
+                self._pending_reasons.append(reason)
+            if self._timer is not None:
+                self._timer.cancel()
+            self._timer = threading.Timer(self.DEBOUNCE_SECONDS, self._do_sync)
+            self._timer.daemon = True
+            self._timer.start()
+
+    def stop(self) -> None:
+        with self._lock:
+            if self._timer is not None:
+                self._timer.cancel()
+                self._timer = None
+
+    # ------------------------------------------------------------------
+    def _do_sync(self) -> None:
+        with self._lock:
+            now = time.time()
+            elapsed = now - self._last_sync_time
+            if elapsed < self.COOLDOWN_SECONDS:
+                remaining = self.COOLDOWN_SECONDS - elapsed + 1
+                self._timer = threading.Timer(remaining, self._do_sync)
+                self._timer.daemon = True
+                self._timer.start()
+                return
+            self._last_sync_time = now
+            reasons = list(self._pending_reasons)
+            self._pending_reasons.clear()
+            self._timer = None
+        try:
+            self._create_and_send_backup(reasons)
+        except Exception:
+            traceback.print_exc()
+
+    # ------------------------------------------------------------------
+    def _create_and_send_backup(self, reasons: list[str]) -> None:
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        zip_name = f"dsfm_backup_{timestamp}.zip"
+        self.EXPORTS_DIR.mkdir(parents=True, exist_ok=True)
+        zip_path = self.EXPORTS_DIR / zip_name
+        excluded: list[tuple[str, str]] = []
+
+        # Pre-check uploads size to avoid building a zip that will be too large
+        uploads_dir = Path("uploads")
+        uploads_total = sum(
+            f.stat().st_size for f in uploads_dir.rglob("*") if f.is_file()
+        ) if uploads_dir.exists() else 0
+        skip_uploads = uploads_total > self.TELEGRAM_FILE_LIMIT
+        if skip_uploads:
+            excluded.append(
+                ("uploads/*", f"Uploads folder too large ({uploads_total} bytes); excluded")
+            )
+
+        try:
+            self._build_zip(zip_path, excluded, skip_uploads=skip_uploads)
+            zip_size = zip_path.stat().st_size
+
+            if zip_size > self.TELEGRAM_FILE_LIMIT and not skip_uploads:
+                zip_path.unlink(missing_ok=True)
+                excluded.append(
+                    ("uploads/*", f"Backup exceeded Telegram limit ({zip_size} bytes); uploads excluded")
+                )
+                self._build_zip(zip_path, excluded, skip_uploads=True)
+                zip_size = zip_path.stat().st_size
+
+            if zip_size > self.TELEGRAM_FILE_LIMIT:
+                excluded.append(
+                    (zip_name, f"Still too large ({zip_size} bytes) even without uploads")
+                )
+                self._tg_send_text(
+                    f"\u26a0\ufe0f DSFM Sync: backup too large to send ({zip_size} bytes). "
+                    "Manual backup recommended."
+                )
+                return
+
+            reason_text = ", ".join(reasons[:5]) if reasons else "Automatic sync"
+            if len(reasons) > 5:
+                reason_text += f" (+{len(reasons) - 5} more)"
+            caption = f"\U0001f504 DSFM Backup\n\U0001f4c5 {timestamp}\n\U0001f4dd {reason_text}"
+            if len(caption) > self.TELEGRAM_CAPTION_LIMIT:
+                caption = caption[: self.TELEGRAM_CAPTION_LIMIT - 3] + "..."
+
+            if excluded:
+                lines = ["\u26a0\ufe0f DSFM Sync \u2014 excluded files:", ""]
+                for path, reason in excluded:
+                    lines.append(f"\u2022 {path}: {reason}")
+                self._tg_send_text("\n".join(lines))
+
+            self._tg_send_document(zip_path, caption)
+        finally:
+            try:
+                zip_path.unlink(missing_ok=True)
+            except Exception:
+                pass
+
+    # ------------------------------------------------------------------
+    def _build_zip(
+        self, zip_path: Path, excluded: list[tuple[str, str]], *, skip_uploads: bool
+    ) -> None:
+        with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
+            # Database (consistent snapshot via sqlite3 backup API)
+            db_file = Path(self.db_path)
+            if db_file.exists():
+                tmp_db = self.EXPORTS_DIR / "_sync_tmp.sqlite3"
+                src = dst = None
+                try:
+                    src = sqlite3.connect(str(db_file))
+                    dst = sqlite3.connect(str(tmp_db))
+                    src.backup(dst)
+                    zf.write(tmp_db, db_file.name)
+                finally:
+                    if dst:
+                        dst.close()
+                    if src:
+                        src.close()
+                    tmp_db.unlink(missing_ok=True)
+
+            # Config
+            cfg = Path(self.config_path)
+            if cfg.exists():
+                zf.write(cfg, cfg.name)
+
+            # Secret key file
+            sf = Path(SECRET_FILE_NAME)
+            if sf.exists():
+                zf.write(sf, sf.name)
+
+            # Logs
+            logs_dir = Path("logs")
+            if logs_dir.exists():
+                for f in sorted(logs_dir.rglob("*")):
+                    if f.is_file():
+                        fsize = f.stat().st_size
+                        if fsize > self.TELEGRAM_FILE_LIMIT:
+                            excluded.append((str(f), f"File too large ({fsize} bytes)"))
+                            continue
+                        zf.write(f, str(f))
+
+            # Uploads
+            if not skip_uploads:
+                uploads_dir = Path("uploads")
+                if uploads_dir.exists():
+                    for f in sorted(uploads_dir.rglob("*")):
+                        if f.is_file():
+                            fsize = f.stat().st_size
+                            if fsize > self.MAX_INDIVIDUAL_FILE:
+                                excluded.append((str(f), f"Individual file too large ({fsize} bytes)"))
+                                continue
+                            zf.write(f, str(f))
+
+    # ------------------------------------------------------------------
+    def _tg_send_document(self, file_path: Path, caption: str) -> bool:
+        url = f"https://api.telegram.org/bot{self.token}/sendDocument"
+        boundary = secrets.token_hex(16)
+
+        parts: list[bytes] = []
+
+        def _field(name: str, value: str) -> None:
+            parts.append(
+                f"--{boundary}\r\nContent-Disposition: form-data; name=\"{name}\"\r\n\r\n{value}\r\n".encode()
+            )
+
+        _field("chat_id", self.user_id)
+        _field("caption", caption)
+
+        file_data = file_path.read_bytes()
+        parts.append(
+            f"--{boundary}\r\nContent-Disposition: form-data; name=\"document\"; "
+            f"filename=\"{file_path.name}\"\r\nContent-Type: application/zip\r\n\r\n".encode()
+            + file_data
+            + b"\r\n"
+        )
+        parts.append(f"--{boundary}--\r\n".encode())
+
+        body = b"".join(parts)
+        req = urllib.request.Request(
+            url,
+            data=body,
+            headers={"Content-Type": f"multipart/form-data; boundary={boundary}"},
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=120) as resp:
+                return resp.status == 200
+        except Exception:
+            traceback.print_exc()
+            return False
+
+    def _tg_send_text(self, text: str) -> bool:
+        url = f"https://api.telegram.org/bot{self.token}/sendMessage"
+        payload = json.dumps({"chat_id": self.user_id, "text": text}).encode()
+        req = urllib.request.Request(
+            url,
+            data=payload,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                return resp.status == 200
+        except Exception:
+            traceback.print_exc()
+            return False
+
+
 class DSFMService:
     def __init__(self, db: Database, activity_logger: ActivityLogger):
         self.db = db
         self.activity_logger = activity_logger
+        self._sync_manager: SyncManager | None = None
         self._state_lock = threading.RLock()
         self._settings_lock = threading.RLock()
         self._settings_cache: dict[str, str] | None = None
+
+    def notify_sync(self, reason: str = "") -> None:
+        if self._sync_manager is not None:
+            self._sync_manager.notify(reason)
 
     # ---------- Admin ----------
     def has_admin(self) -> bool:
@@ -497,10 +744,12 @@ class DSFMService:
         if not self.has_admin():
             selected_role = "superadmin"
         ts = now_str()
-        return self.db.execute(
+        result = self.db.execute(
             "INSERT INTO admins(username, password_hash, role, created_by, created_at, updated_at) VALUES(?, ?, ?, ?, ?, ?)",
             (clean_user, generate_password_hash(password), selected_role, created_by, ts, ts),
         )
+        self.notify_sync(f"Admin created: {clean_user}")
+        return result
 
     def verify_admin(self, username: str, password: str) -> sqlite3.Row | None:
         row = self.db.fetchone("SELECT * FROM admins WHERE username = ?", (sanitize_username(username),))
@@ -524,6 +773,7 @@ class DSFMService:
             "UPDATE admins SET password_hash = ?, updated_at = ? WHERE id = ?",
             (generate_password_hash(new_password), now_str(), admin_id),
         )
+        self.notify_sync("Admin password changed")
 
     def change_admin_username(self, admin_id: int, current_password: str, new_username: str) -> str:
         row = self.db.fetchone("SELECT * FROM admins WHERE id = ?", (admin_id,))
@@ -538,6 +788,7 @@ class DSFMService:
         if existing:
             raise ValueError("Nome utente già in uso")
         self.db.execute("UPDATE admins SET username = ?, updated_at = ? WHERE id = ?", (clean_user, now_str(), admin_id))
+        self.notify_sync(f"Admin username changed: {clean_user}")
         return clean_user
 
     def is_superadmin(self, admin_id: int) -> bool:
@@ -572,6 +823,7 @@ class DSFMService:
             "UPDATE admins SET password_hash = ?, updated_at = ? WHERE id = ?",
             (generate_password_hash(new_password), now_str(), target_id),
         )
+        self.notify_sync("Admin password reset by superadmin")
 
     def delete_admin_by_superadmin(self, actor_admin_id: int, target_admin_id: int) -> None:
         if not self.is_superadmin(actor_admin_id):
@@ -587,6 +839,7 @@ class DSFMService:
         if self.count_admins() <= 1:
             raise ValueError("Impossibile eliminare l'ultimo account admin")
         self.db.execute("DELETE FROM admins WHERE id = ?", (target_id,))
+        self.notify_sync("Admin deleted by superadmin")
 
     def transfer_superadmin(self, actor_admin_id: int, target_admin_id: int, current_password: str) -> None:
         actor = self.get_admin_by_id(actor_admin_id)
@@ -609,6 +862,7 @@ class DSFMService:
             conn.execute("UPDATE admins SET role = 'superadmin', updated_at = ? WHERE id = ?", (ts, target_id))
 
         self.db.run_transaction(_tx)
+        self.notify_sync("Superadmin role transferred")
 
     def delete_admin(self, admin_id: int, current_password: str) -> None:
         row = self.get_admin_by_id(admin_id)
@@ -621,6 +875,7 @@ class DSFMService:
         if self.count_admins() <= 1:
             raise ValueError("Impossibile eliminare l'ultimo account admin")
         self.db.execute("DELETE FROM admins WHERE id = ?", (admin_id,))
+        self.notify_sync("Admin self-deleted")
 
     def get_admin_by_id(self, admin_id: int) -> sqlite3.Row | None:
         return self.db.fetchone("SELECT * FROM admins WHERE id = ?", (admin_id,))
@@ -689,6 +944,7 @@ class DSFMService:
         username = sanitize_text(getattr(telegram_user, "username", ""), 64)
         first_name = sanitize_text(getattr(telegram_user, "first_name", ""), 64)
         last_name = sanitize_text(getattr(telegram_user, "last_name", ""), 64)
+        is_new = self.get_user(user_id) is None
         ts = now_str()
         self.db.execute(
             """
@@ -702,6 +958,8 @@ class DSFMService:
             """,
             (user_id, username, first_name, last_name, ts, ts),
         )
+        if is_new:
+            self.notify_sync(f"New user signup: {user_id}")
 
     def get_user(self, user_id: int) -> sqlite3.Row | None:
         return self.db.fetchone("SELECT * FROM users WHERE telegram_id = ?", (user_id,))
@@ -715,6 +973,7 @@ class DSFMService:
             "UPDATE users SET is_suspended = ? WHERE telegram_id = ?",
             (1 if suspended else 0, user_id),
         )
+        self.notify_sync(f"User {'suspended' if suspended else 'unsuspended'}: {user_id}")
 
     def mark_user_blocked_bot(self, user_id: int, blocked: bool) -> None:
         self.db.execute("UPDATE users SET blocked_bot = ? WHERE telegram_id = ?", (1 if blocked else 0, user_id))
@@ -827,7 +1086,7 @@ class DSFMService:
         media_path: str = "",
     ) -> int:
         ts = now_str()
-        return self.db.execute(
+        result = self.db.execute(
             """
             INSERT INTO menu_nodes(parent_id, title, internal_name, message_text, media_type, media_path, sort_order, created_at, updated_at)
             VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -844,6 +1103,8 @@ class DSFMService:
                 ts,
             ),
         )
+        self.notify_sync("Menu node created")
+        return result
 
     def update_node(self, node_id: int, data: dict[str, Any]) -> None:
         self.db.execute(
@@ -863,12 +1124,14 @@ class DSFMService:
                 node_id,
             ),
         )
+        self.notify_sync("Menu node updated")
 
     def delete_node(self, node_id: int) -> None:
         root = self.get_root_node()
         if root and root["id"] == node_id:
             raise ValueError("Il nodo radice non può essere eliminato")
         self.db.execute("DELETE FROM menu_nodes WHERE id = ?", (node_id,))
+        self.notify_sync("Menu node deleted")
 
     def get_node(self, node_id: int) -> sqlite3.Row | None:
         return self.db.fetchone("SELECT * FROM menu_nodes WHERE id = ?", (node_id,))
@@ -920,7 +1183,7 @@ class DSFMService:
         if action not in ACTION_TYPES:
             raise ValueError("Tipo azione non supportato")
         ts = now_str()
-        return self.db.execute(
+        result = self.db.execute(
             """
             INSERT INTO menu_buttons(node_id, row_index, sort_order, label, action_type, action_value, created_at, updated_at)
             VALUES(?, ?, ?, ?, ?, ?, ?, ?)
@@ -936,6 +1199,8 @@ class DSFMService:
                 ts,
             ),
         )
+        self.notify_sync("Menu button created")
+        return result
 
     def update_button(self, button_id: int, data: dict[str, Any]) -> None:
         action = sanitize_text(data.get("action_type", ""), 40).upper()
@@ -957,9 +1222,11 @@ class DSFMService:
                 button_id,
             ),
         )
+        self.notify_sync("Menu button updated")
 
     def delete_button(self, button_id: int) -> None:
         self.db.execute("DELETE FROM menu_buttons WHERE id = ?", (button_id,))
+        self.notify_sync("Menu button deleted")
 
     def get_button(self, button_id: int) -> sqlite3.Row | None:
         return self.db.fetchone("SELECT * FROM menu_buttons WHERE id = ?", (button_id,))
@@ -1185,6 +1452,7 @@ class DSFMService:
                     )
 
         self.db.run_transaction(_tx)
+        self.notify_sync("Menu imported")
 
     # ---------- Chat ----------
     def get_open_chat(self, user_id: int) -> sqlite3.Row | None:
@@ -1211,6 +1479,7 @@ class DSFMService:
             "UPDATE chats SET status = 'closed', updated_at = ?, closed_at = ? WHERE id = ?",
             (ts, ts, chat_id),
         )
+        self.notify_sync("Chat closed")
 
     def reopen_chat(self, chat_id: int) -> None:
         chat = self.get_chat(chat_id)
@@ -1224,6 +1493,7 @@ class DSFMService:
             "UPDATE chats SET status = 'open', updated_at = ?, reopened_at = ? WHERE id = ?",
             (ts, ts, chat_id),
         )
+        self.notify_sync("Chat reopened")
 
     def get_chat(self, chat_id: int) -> sqlite3.Row | None:
         return self.db.fetchone(
@@ -2565,6 +2835,12 @@ def load_config(config_path: str) -> dict[str, Any]:
                     "bot_token = \"\"",
                     "polling_timeout = 20",
                     "",
+                    "[sync]",
+                    "# Strongly recommended: automatic backup to Telegram",
+                    "enabled = false",
+                    "token = \"\"",
+                    "user_id = \"\"",
+                    "",
                 ]
             ),
             encoding="utf-8",
@@ -2588,6 +2864,18 @@ def load_config(config_path: str) -> dict[str, Any]:
 
     data["telegram"].setdefault("bot_token", "")
     data["telegram"].setdefault("polling_timeout", 20)
+
+    data.setdefault("sync", {})
+    data["sync"].setdefault("enabled", False)
+    data["sync"].setdefault("token", "")
+    data["sync"].setdefault("user_id", "")
+
+    env_sync_token = sanitize_text(os.environ.get("DSFM_SYNC_TOKEN", ""), 256)
+    if env_sync_token:
+        data["sync"]["token"] = env_sync_token
+    env_sync_uid = sanitize_text(os.environ.get("DSFM_SYNC_USERID", ""), 64)
+    if env_sync_uid:
+        data["sync"]["user_id"] = env_sync_uid
 
     env_token = sanitize_text(os.environ.get(TOKEN_ENV, ""), 256)
     if env_token:
@@ -2629,9 +2917,20 @@ def create_app(config_path: str | None = None, testing: bool = False, start_bot:
 
     bot_service = DSFMBot(service, cfg)
 
+    sync_cfg = cfg.get("sync", {})
+    sync_manager = SyncManager(
+        enabled=to_bool(sync_cfg.get("enabled", False)),
+        token=sanitize_text(sync_cfg.get("token", ""), 256),
+        user_id=sanitize_text(sync_cfg.get("user_id", ""), 64),
+        db_path=cfg["app"]["database_path"],
+        config_path=cfg_path,
+    )
+    service._sync_manager = sync_manager
+
     app.extensions["dsfm_config"] = cfg
     app.extensions["dsfm_service"] = service
     app.extensions["dsfm_bot"] = bot_service
+    app.extensions["dsfm_sync"] = sync_manager
 
     if start_bot:
         bot_service.start_background()
@@ -2639,6 +2938,7 @@ def create_app(config_path: str | None = None, testing: bool = False, start_bot:
     @atexit.register
     def _cleanup_bot() -> None:  # pragma: no cover
         bot_service.stop()
+        sync_manager.stop()
 
     def current_service() -> DSFMService:
         return app.extensions["dsfm_service"]
@@ -3526,6 +3826,7 @@ def create_app(config_path: str | None = None, testing: bool = False, start_bot:
                     source="admin_panel",
                 )
                 flash("Impostazioni aggiornate", "success")
+                service_obj.notify_sync("Settings updated")
                 return redirect(url_for("settings_page"))
 
             if action == "change_password":
