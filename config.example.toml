@@ -1,0 +1,15 @@
+[app]
+host = "0.0.0.0"
+port = 8080
+secret_key = ""
+debug = false
+database_path = "dsfm.sqlite3"
+
+[security]
+session_cookie_secure = false
+session_cookie_samesite = "Strict"
+
+[telegram]
+# Insert your bot token here or set DSFM_BOT_TOKEN environment variable
+bot_token = ""
+polling_timeout = 20

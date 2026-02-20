@@ -1,46 +1,41 @@
 # DSFM (DavShopFrameworkM)
 
-DSFM è un progetto Python 3 singolo-file (`app.py`) che avvia nello stesso processo:
+DSFM is a single-file Python 3 application (`app.py`) that runs in a single process:
 
-- pannello admin Flask
-- bot Telegram (`pyTelegramBotAPI`)
-- database SQLite
+- **Flask admin panel** for managing the bot, users, orders, and support chats
+- **Telegram bot** (`pyTelegramBotAPI`) with tree-based menu navigation
+- **SQLite database** for persistent storage
 
-Il bot e il web server girano insieme: Flask nel thread principale, polling Telegram in thread dedicato.
+Flask runs in the main thread while Telegram polling runs in a dedicated background thread.
 
-## Funzioni principali
+## Features
 
-- Setup iniziale admin (primo account = `superadmin`)
-- Login/logout sicuro con CSRF e session hardening
-- Costruttore menu Telegram ad albero (nodi, pulsanti, media, import/export JSON)
-- Flusso ordini con carrello, modifica elementi, invio ordine in chat admin
-- Chat supporto controllata (una chat aperta per utente, reply da pannello, close/reopen/sospensione)
-- Notifica utente quando admin chiude la richiesta
-- Statistiche + export CSV/JSON
-- Logging avanzato:
-  - file continuo `logs/bot_activity.log`
-  - log strutturati su DB (`activity_logs`) con `level` e `source`
-  - pagina log admin con filtri e tail del file live
+- **Initial setup** — first admin account is created as `superadmin` via `/setup`
+- **Secure authentication** — login/logout with CSRF protection and session hardening
+- **Menu builder** — tree-structured Telegram menu with nodes, buttons, media, and JSON import/export
+- **Order flow** — cart system with item editing and order submission to admin chat
+- **Support chat** — one open chat per user, admin reply from the panel, close/reopen/suspend
+- **User notifications** — users are notified when admin closes a support request
+- **Statistics** — dashboard metrics with CSV/JSON export
+- **Logging** — continuous file log (`logs/bot_activity.log`), structured DB logs with level/source filters, and live tail in admin panel
 
-## Gestione Admin e Ruoli
+## Admin Roles
 
-- Primo account creato in `/setup` => `superadmin`
-- Il `superadmin` può:
-  - creare altri admin
-  - trasferire il ruolo `superadmin` a un altro admin
-- Un `superadmin` non può eliminare il proprio account finché non trasferisce il ruolo
-- Dopo il trasferimento, l’ex superadmin diventa admin normale e può eliminare il suo account
-- Ogni admin può:
-  - cambiare username
-  - cambiare password
-  - eliminare il proprio account (se consentito dai vincoli)
+| Role | Capabilities |
+|------|-------------|
+| `superadmin` | Create/delete admins, transfer superadmin role, full system settings |
+| `admin` | Manage chats, users, own account settings |
 
-## Requisiti
+- The first account created via `/setup` is automatically `superadmin`
+- A `superadmin` must transfer the role before deleting their own account
+- Every admin can change their username, password, or delete their account (subject to role constraints)
+
+## Requirements
 
 - Python 3.10+
-- Linux/macOS consigliati per deploy VPS
+- Linux / macOS recommended for VPS deployment
 
-## Installazione
+## Installation
 
 ```bash
 python3 -m venv venv
@@ -49,47 +44,42 @@ pip install -r requirements.txt
 cp config.example.toml config.toml
 ```
 
-Configura token e segreti:
-
-- consigliato via env:
+Configure your token and secrets (environment variables are recommended):
 
 ```bash
-export DSFM_BOT_TOKEN="TOKEN_BOT"
-export DSFM_SECRET_KEY="CHIAVE_RANDOM_LUNGA"
+export DSFM_BOT_TOKEN="YOUR_BOT_TOKEN"
+export DSFM_SECRET_KEY="YOUR_RANDOM_SECRET_KEY"
 ```
 
-- oppure in `config.toml` (meno consigliato per ambienti condivisi)
+Alternatively, edit `config.toml` directly (not recommended for shared environments).
 
-## Avvio
+## Usage
 
 ```bash
 python app.py
 ```
 
-Poi apri:
+Then open:
 
-- `http://<host>:<port>/setup` (solo primo avvio)
-- `http://<host>:<port>/login`
+- `http://<host>:<port>/setup` — first-run admin setup
+- `http://<host>:<port>/login` — admin login
 
-## Test
+## Project Structure
 
-```bash
-./venv/bin/pytest -q
+```
+app.py                  # Full application + bot logic
+config.example.toml     # Configuration template
+requirements.txt        # Python dependencies
+templates/              # HTML templates for the admin panel
+static/                 # CSS and JavaScript assets
+logs/                   # Runtime log files (generated)
+uploads/                # Media uploaded from the panel (generated)
 ```
 
-## Struttura
+## Security Notes
 
-- `app.py`: logica completa app + bot
-- `templates/`: pagine HTML pannello
-- `static/`: CSS e JS
-- `logs/`: file log runtime
-- `uploads/`: media caricati dal pannello
-- `tests/`: test automatici
-- `docs/`: documentazione operativa
-
-## Note sicurezza operative
-
-- Se un token bot è stato condiviso pubblicamente, rigeneralo subito su BotFather
-- Usa `DSFM_SECRET_KEY` forte e stabile
-- Attiva HTTPS su VPS e imposta `session_cookie_secure = true` in produzione
-- Esegui backup periodico di `dsfm.sqlite3` e `logs/`
+- **Never commit secrets.** Use environment variables (`DSFM_BOT_TOKEN`, `DSFM_SECRET_KEY`) or a local `config.toml` (gitignored)
+- If a bot token has been exposed publicly, regenerate it immediately via [BotFather](https://t.me/BotFather)
+- Use a strong, stable `DSFM_SECRET_KEY`
+- Enable HTTPS and set `session_cookie_secure = true` in production
+- Back up `dsfm.sqlite3` and `logs/` regularly
