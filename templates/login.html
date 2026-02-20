@@ -1,0 +1,19 @@
+{% extends "auth_base.html" %}
+{% block content %}
+<h2 style="margin-top:0;">Accedi</h2>
+<form method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+  <div class="form-group">
+    <label for="username">Nome Utente</label>
+    <input id="username" name="username" required autocomplete="username" placeholder="Inserisci nome utente">
+  </div>
+
+  <div class="form-group" style="margin-top:0.7rem;">
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" required autocomplete="current-password" placeholder="•••••••••••">
+  </div>
+
+  <button class="btn primary" style="margin-top:1rem; width:100%;" type="submit">Accedi</button>
+</form>
+{% endblock %}

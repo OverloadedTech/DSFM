@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-head">
+  <h1 class="section-title">Statistiche</h1>
+  <p class="metric-sub">Dati aggregati del traffico e delle interazioni.</p>
+</div>
+
+<div class="action-row block-gap-small">
+  <a class="btn" href="{{ url_for('stats_export', fmt='csv') }}">Esporta CSV</a>
+  <a class="btn" href="{{ url_for('stats_export', fmt='json') }}">Esporta JSON</a>
+</div>
+
+<div class="grid-4">
+  <div class="card stat-card">
+    <div class="metric-sub">Utenti totali</div>
+    <div class="metric">{{ stats.metrics.total_users }}</div>
+  </div>
+  <div class="card stat-card">
+    <div class="metric-sub">Richieste oggi</div>
+    <div class="metric">{{ stats.metrics.requests_today }}</div>
+  </div>
+  <div class="card stat-card">
+    <div class="metric-sub">Chat attive</div>
+    <div class="metric">{{ stats.metrics.active_chats }}</div>
+  </div>
+  <div class="card stat-card">
+    <div class="metric-sub">Sezione più vista</div>
+    <div class="metric metric-small">{{ stats.metrics.top_section }}</div>
+  </div>
+</div>
+
+<div class="grid-2 block-gap">
+  <div class="card chart-card">
+    <h3>Richieste per ora</h3>
+    <div class="chart-wrap">
+      <canvas id="hourlyChart"
+        data-labels='{{ stats.hourly_requests | map(attribute="hour") | list | tojson }}'
+        data-values='{{ stats.hourly_requests | map(attribute="count") | list | tojson }}'></canvas>
+    </div>
+  </div>
+
+  <div class="card chart-card">
+    <h3>Sezioni più visitate</h3>
+    <div class="chart-wrap">
+      <canvas id="sectionsChart"
+        data-labels='{{ stats.top_sections | map(attribute="title") | list | tojson }}'
+        data-values='{{ stats.top_sections | map(attribute="count") | list | tojson }}'></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="card block-gap">
+  <h3>Richieste giornaliere (ultimi 30 giorni)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Richieste</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for row in stats.daily_requests %}
+        <tr>
+          <td>{{ row.day }}</td>
+          <td>{{ row.count }}</td>
+        </tr>
+      {% else %}
+        <tr><td colspan="2" class="empty">Nessun dato disponibile</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

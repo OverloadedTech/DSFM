@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pannello</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-badge">●</div>
+    <div class="brand-title">Pannello</div>
+    {% if is_logged_in %}
+      <div class="brand-sub">{{ current_admin_username }} · {{ current_admin_role }}</div>
+    {% endif %}
+  </div>
+
+  {% if is_logged_in %}
+  <nav class="topnav">
+    <a class="{% if request.endpoint in ['chats', 'chat_detail'] %}active{% endif %}" href="{{ url_for('chats') }}">Chat Attive</a>
+    <a class="{% if request.endpoint == 'users_page' %}active{% endif %}" href="{{ url_for('users_page') }}">Utenti</a>
+    <a class="{% if request.endpoint == 'banned_users_page' %}active{% endif %}" href="{{ url_for('banned_users_page') }}">Bannati</a>
+    {% if is_superadmin %}
+    <a class="{% if request.endpoint == 'dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a class="{% if request.endpoint == 'menu_builder' %}active{% endif %}" href="{{ url_for('menu_builder') }}">Costruttore Bot</a>
+    <a class="{% if request.endpoint == 'stats' %}active{% endif %}" href="{{ url_for('stats') }}">Statistiche</a>
+    <a class="{% if request.endpoint == 'logs_page' %}active{% endif %}" href="{{ url_for('logs_page') }}">Logs</a>
+    {% endif %}
+    <a class="{% if request.endpoint == 'settings_page' %}active{% endif %}" href="{{ url_for('settings_page') }}">Impostazioni</a>
+  </nav>
+
+  <div class="action-row">
+    <form class="logout-inline" method="post" action="{{ url_for('logout') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <button type="submit">Esci</button>
+    </form>
+  </div>
+  {% endif %}
+</header>
+
+<main class="page-wrap">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-wrap">
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</main>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

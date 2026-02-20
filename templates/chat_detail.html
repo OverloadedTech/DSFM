@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="section-title">Chat #{{ chat.id }}</h1>
+
+<div class="card" style="margin-bottom:1rem;">
+  <div class="action-row" style="justify-content:space-between; align-items:flex-start;">
+    <div>
+      <h3 style="margin-bottom:0.3rem;">{{ chat.first_name or '' }} {{ chat.last_name or '' }} {% if chat.username %}(@{{ chat.username }}){% endif %}</h3>
+      <div class="metric-sub">Utente ID: {{ chat.user_id }} | Fonte: {{ chat.source }} | Stato: {{ chat.status|upper }}</div>
+      {% if chat.is_suspended %}
+        <div class="tag err" style="margin-top:0.5rem;">UTENTE BANNATO</div>
+      {% endif %}
+    </div>
+
+    <div class="action-row">
+      {% if chat.status == 'open' %}
+      <form method="post" action="{{ url_for('chat_close', chat_id=chat.id) }}" data-confirm="Chiudere questa chat?">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <button class="btn primary" type="submit">Chiudi Ticket</button>
+      </form>
+      {% else %}
+      <form method="post" action="{{ url_for('chat_reopen', chat_id=chat.id) }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <button class="btn" type="submit">Riapri Chat</button>
+      </form>
+      {% endif %}
+
+      <form method="post" action="{{ url_for('chat_suspend_user', chat_id=chat.id) }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="suspend" value="{{ 0 if chat.is_suspended else 1 }}">
+        {% if chat.is_suspended %}
+          <button class="btn" type="submit">Sbanna Utente</button>
+        {% else %}
+          <button class="btn danger" type="submit">Banna Utente</button>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div
+    class="chat-body"
+    data-chat-scroll="true"
+    data-chat-live="true"
+    data-chat-api="{{ url_for('api_chat_messages', chat_id=chat.id) }}"
+    data-last-id="{{ messages[-1].id if messages else 0 }}"
+  >
+    {% for msg in messages %}
+      <div
+        class="msg {% if msg.sender_type == 'admin' %}admin{% elif msg.sender_type == 'admin_note' %}note{% else %}user{% endif %}"
+        data-msg-id="{{ msg.id }}"
+      >
+        {% if msg.reply_to_content %}
+          <div class="msg-reply-ref">
+            Risposta a #{{ msg.reply_to_message_id }}: {{ msg.reply_to_content }}
+          </div>
+        {% endif %}
+        <div>{{ msg.content }}</div>
+        <div class="msg-meta">
+          {{ msg.sender_type }} · {{ msg.content_type }} · {{ msg.created_at|fmt_dt }}
+        </div>
+        {% if msg.sender_type == 'user' and msg.direction == 'in' %}
+          <button
+            type="button"
+            class="btn reply-link"
+            data-reply-to="{{ msg.id }}"
+            data-reply-preview="{{ msg.content }}"
+          >
+            Rispondi a questo
+          </button>
+        {% endif %}
+      </div>
+    {% else %}
+      <div class="empty">Nessun messaggio in questa chat.</div>
+    {% endfor %}
+  </div>
+
+  <form method="post" action="{{ url_for('chat_reply', chat_id=chat.id) }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <input type="hidden" name="reply_to_message_id" value="" data-reply-target-input>
+    <div class="empty" data-reply-target-box style="display:none; margin-bottom:0.7rem;">
+      <div data-reply-target-text></div>
+      <button type="button" class="btn block-gap-small" data-reply-clear>Rimuovi riferimento</button>
+    </div>
+    <div class="form-group">
+      <label>Risposta</label>
+      <textarea name="reply_text" maxlength="5000" placeholder="Scrivi una risposta per l'utente..." required></textarea>
+    </div>
+
+    <div class="form-group" style="margin-top:0.6rem;">
+      <label>
+        <input style="width:auto;" type="checkbox" name="internal_note" value="1">
+        Nota interna (non inviare su Telegram)
+      </label>
+    </div>
+
+    <button class="btn primary" style="margin-top:0.8rem;">Invia Risposta</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-head">
+  <h1 class="section-title">Dashboard</h1>
+  <p class="metric-sub">Stato generale del sistema.</p>
+</div>
+
+<div class="grid-4">
+  <div class="card stat-card">
+    <div class="metric-sub">Utenti totali</div>
+    <div class="metric">{{ metrics.total_users }}</div>
+  </div>
+  <div class="card stat-card">
+    <div class="metric-sub">Richieste oggi</div>
+    <div class="metric">{{ metrics.requests_today }}</div>
+  </div>
+  <div class="card stat-card">
+    <div class="metric-sub">Chat attive</div>
+    <div class="metric">{{ metrics.active_chats }}</div>
+  </div>
+  <div class="card stat-card">
+    <div class="metric-sub">Sezione più vista</div>
+    <div class="metric metric-small">{{ metrics.top_section }}</div>
+  </div>
+</div>
+
+<div class="grid-2 block-gap">
+  <div class="card chart-card">
+    <h3>Richieste per ora (24h)</h3>
+    <div class="chart-wrap">
+      <canvas id="hourlyChart"
+        data-labels='{{ hourly | map(attribute="hour") | list | tojson }}'
+        data-values='{{ hourly | map(attribute="count") | list | tojson }}'></canvas>
+    </div>
+  </div>
+
+  <div class="card chart-card">
+    <h3>Sezioni più visitate</h3>
+    <div class="chart-wrap">
+      <canvas id="sectionsChart"
+        data-labels='{{ top_sections | map(attribute="title") | list | tojson }}'
+        data-values='{{ top_sections | map(attribute="count") | list | tojson }}'></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="grid-2 block-gap">
+  <div class="card">
+    <h3>Chat</h3>
+    <div class="metric-sub">Aperte: {{ metrics.chats_opened }} · Chiuse: {{ metrics.chats_closed }}</div>
+  </div>
+  <div class="card">
+    <h3>Bot Telegram</h3>
+    {% if bot_status.enabled %}
+      <div class="tag ok">Abilitato</div>
+      <div class="metric-sub">Polling attivo: {{ 'SI' if bot_status.running else 'NO' }}</div>
+    {% else %}
+      <div class="tag warn">Disabilitato</div>
+      <div class="metric-sub">Configura il token bot.</div>
+    {% endif %}
+    {% if bot_status.last_error %}
+      <div class="metric-sub error-text block-gap-small">Ultimo errore: {{ bot_status.last_error }}</div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="card block-gap">
+  <h3>Attività recenti</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>Utente</th>
+          <th>Azione</th>
+          <th>Contenuto</th>
+          <th>Percorso menu</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for row in recent_logs %}
+        <tr>
+          <td>{{ row.ts|fmt_dt }}</td>
+          <td>{{ row.username or row.user_id or '-' }}</td>
+          <td>{{ row.action }}</td>
+          <td>{{ row.content }}</td>
+          <td>{{ row.menu_path or '-' }}</td>
+        </tr>
+      {% else %}
+        <tr><td colspan="5" class="empty">Nessun log disponibile</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

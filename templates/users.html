@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="section-title">{% if view == "banned" %}Utenti Bannati{% else %}Utenti Bot{% endif %}</h1>
+
+<div class="action-row" style="margin-bottom:0.8rem;">
+  <a class="btn {% if view == 'all' %}primary{% endif %}" href="{{ url_for('users_page') }}">
+    Tutti ({{ counts.total_users }})
+  </a>
+  <a class="btn {% if view == 'banned' %}primary{% endif %}" href="{{ url_for('banned_users_page') }}">
+    Bannati ({{ counts.banned_users }})
+  </a>
+</div>
+
+<div class="card" style="margin-bottom:0.8rem;">
+  <form class="action-row" method="get" action="{{ url_for('banned_users_page' if view == 'banned' else 'users_page') }}">
+    <input name="q" maxlength="120" value="{{ query }}" placeholder="Cerca per ID, username o nome">
+    <button class="btn primary" type="submit">Cerca</button>
+    {% if query %}
+      <a class="btn" href="{{ url_for('banned_users_page' if view == 'banned' else 'users_page') }}">Reset</a>
+    {% endif %}
+  </form>
+</div>
+
+<div class="card">
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>ID Telegram</th>
+          <th>Username</th>
+          <th>Nome</th>
+          <th>Stato</th>
+          <th>Bot</th>
+          <th>Chat</th>
+          <th>Creato</th>
+          <th>Ultimo Accesso</th>
+          <th>Azioni</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for row in users %}
+        <tr>
+          <td>{{ row.telegram_id }}</td>
+          <td>{% if row.username %}@{{ row.username }}{% else %}-{% endif %}</td>
+          <td>{{ row.first_name or '' }} {{ row.last_name or '' }}</td>
+          <td>
+            {% if row.is_suspended %}
+              <span class="tag err">BANNATO</span>
+            {% else %}
+              <span class="tag ok">ATTIVO</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if row.blocked_bot %}
+              <span class="tag warn">BLOCCATO</span>
+            {% else %}
+              <span class="tag ok">OK</span>
+            {% endif %}
+          </td>
+          <td>{{ row.chats_open }}/{{ row.chats_total }}</td>
+          <td>{{ row.created_at|fmt_dt }}</td>
+          <td>{{ row.last_seen_at|fmt_dt }}</td>
+          <td>
+            <form method="post" action="{{ url_for('user_suspend', user_id=row.telegram_id) }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+              <input type="hidden" name="suspend" value="{{ 0 if row.is_suspended else 1 }}">
+              <input type="hidden" name="return_view" value="{{ view }}">
+              <input type="hidden" name="q" value="{{ query }}">
+              {% if row.is_suspended %}
+                <button class="btn" type="submit">Sbanna</button>
+              {% else %}
+                <button class="btn danger" type="submit">Banna</button>
+              {% endif %}
+            </form>
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="9" class="empty">Nessun utente trovato</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

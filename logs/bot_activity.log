@@ -1,0 +1,870 @@
+[2026-02-19 01:58:49] | AUDIT | admin_panel | 1 | root | - | login_success | Login admin completato |  | {}
+[2026-02-19 01:58:49] | AUDIT | admin_panel | 1 | root | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 01:58:49] | AUDIT | admin_panel | 1 | root | - | admin_request | GET /utenti -> 200 |  | {"endpoint":"users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 01:58:49] | AUDIT | admin_panel | 1 | root | - | admin_request | GET /utenti/sospesi -> 200 |  | {"endpoint":"banned_users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 01:59:01] | AUDIT | admin_panel | 1 | root | - | login_success | Login admin completato |  | {}
+[2026-02-19 01:59:01] | AUDIT | admin_panel | 1 | root | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 01:59:12] | AUDIT | admin_panel | 1 | root | - | login_success | Login admin completato |  | {}
+[2026-02-19 01:59:12] | AUDIT | admin_panel | 1 | root | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 01:59:12] | AUDIT | admin_panel | 1 | root | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 01:59:12] | AUDIT | admin_panel | - | root | - | logout | Logout admin |  | {}
+[2026-02-19 01:59:12] | AUDIT | admin_panel | 2 | operator | - | login_success | Login admin completato |  | {}
+[2026-02-19 01:59:12] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 01:59:12] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /dashboard -> 302 |  | {"endpoint":"dashboard","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 01:59:12] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti -> 200 |  | {"endpoint":"users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:00:04] | AUDIT | admin_panel | 1 | root | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:00:04] | AUDIT | admin_panel | 1 | root | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:00:04] | AUDIT | admin_panel | 1 | root | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:00:04] | AUDIT | admin_panel | - | root | - | logout | Logout admin |  | {}
+[2026-02-19 02:00:04] | AUDIT | admin_panel | 2 | operator | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:00:04] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:00:04] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti -> 200 |  | {"endpoint":"users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:00:04] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti -> 200 |  | {"endpoint":"users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:00:04] | SECURITY | admin_panel | 2 | operator | - | user_banned | Utente 7777 bannato dal pannello utenti |  | {"target_user_id":7777}
+[2026-02-19 02:00:04] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /utenti/7777/sospensione -> 302 |  | {"endpoint":"user_suspend","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:00:04] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti/sospesi -> 200 |  | {"endpoint":"banned_users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /dashboard -> 200 |  | {"endpoint":"dashboard","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu/export -> 200 |  | {"endpoint":"menu_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /menu/import -> 302 |  | {"endpoint":"menu_import","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:04] | INFO | telegram_bot | 4444 | cart4444 | Carlo | order_submit | 🛒 Nuova richiesta ordine
+
+1. Cuffie Pro
+   Quantità: 1
+   Colore: Blu
+   Pagamento: Carta
+   Indirizzo: Via Roma 10, Milano
+   Note: - |  | {"chat_id":1,"items":1}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | root | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | root | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | root | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | root | - | settings_updated | Configurazione generale aggiornata |  | {}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | root | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | root | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | root2 | - | admin_username_changed | Username aggiornato da root a root2 |  | {}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | root2 | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | root2 | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | root2 | - | admin_password_changed | Password aggiornata |  | {}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | root2 | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | - | root2 | - | logout | Logout admin |  | {}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | root2 | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | root2 | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | founder | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | founder | - | admin_created | Creato admin operator |  | {"new_admin_id":2}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:04] | SECURITY | admin_panel | 1 | founder | - | superadmin_transferred | Ruolo superadmin trasferito a operator |  | {"target_admin_id":2}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:04] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | SECURITY | admin_panel | 1 | founder | - | admin_deleted_self | Account admin eliminato volontariamente |  | {}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 2 | operator | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | founder | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | founder | - | admin_created | Creato admin operator |  | {"new_admin_id":2}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | - | founder | - | logout | Logout admin |  | {}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 2 | operator | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /chat -> 200 |  | {"endpoint":"chats","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti -> 200 |  | {"endpoint":"users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti/sospesi -> 200 |  | {"endpoint":"banned_users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /dashboard -> 302 |  | {"endpoint":"dashboard","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /menu -> 302 |  | {"endpoint":"menu_builder","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /stats -> 302 |  | {"endpoint":"stats","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /logs -> 302 |  | {"endpoint":"logs_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti -> 200 |  | {"endpoint":"users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | SECURITY | admin_panel | 2 | operator | - | user_banned | Utente 7777 bannato dal pannello utenti |  | {"target_user_id":7777}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /utenti/7777/sospensione -> 302 |  | {"endpoint":"user_suspend","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti/sospesi -> 200 |  | {"endpoint":"banned_users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti/sospesi -> 200 |  | {"endpoint":"banned_users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | SECURITY | admin_panel | 2 | operator | - | user_unbanned | Utente 7777 sbannato dal pannello utenti |  | {"target_user_id":7777}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /utenti/7777/sospensione -> 302 |  | {"endpoint":"user_suspend","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /menu/node/new -> 302 |  | {"endpoint":"menu_new_node","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"node_id=10","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /menu/node/10/button/add -> 302 |  | {"endpoint":"menu_add_button","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"node_id=10","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /menu/button/13/update -> 302 |  | {"endpoint":"menu_update_button","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /chat/1/reply -> 302 |  | {"endpoint":"chat_reply","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /chat/1/close -> 302 |  | {"endpoint":"chat_close","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /chat/1/reopen -> 302 |  | {"endpoint":"chat_reopen","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | INFO | telegram_bot | 6666 | cmd6666 | Cmd | command | /home |  | {"content_type":"text"}
+[2026-02-19 02:01:05] | INFO | telegram_bot | 6666 | cmd6666 | Cmd | command | /close |  | {"content_type":"text"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /dashboard -> 200 |  | {"endpoint":"dashboard","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:05] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:06] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /stats -> 200 |  | {"endpoint":"stats","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:06] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /logs -> 200 |  | {"endpoint":"logs_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:06] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /stats/export/json -> 200 |  | {"endpoint":"stats_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:06] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /stats/export/csv -> 200 |  | {"endpoint":"stats_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:06] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /logs/export/json -> 200 |  | {"endpoint":"logs_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:06] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /logs/export/csv -> 200 |  | {"endpoint":"logs_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:06] | AUDIT | admin_panel | 1 | adminrl | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:06] | AUDIT | admin_panel | 1 | adminrl | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:06] | AUDIT | admin_panel | 1 | adminrl | - | admin_request | GET /setup -> 302 |  | {"endpoint":"setup","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:12] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:12] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:12] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /dashboard -> 200 |  | {"endpoint":"dashboard","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:12] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:12] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:12] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu/export -> 200 |  | {"endpoint":"menu_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:12] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:12] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /menu/import -> 302 |  | {"endpoint":"menu_import","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:12] | INFO | telegram_bot | 4444 | cart4444 | Carlo | order_submit | 🛒 Nuova richiesta ordine
+
+1. Cuffie Pro
+   Quantità: 1
+   Colore: Blu
+   Pagamento: Carta
+   Indirizzo: Via Roma 10, Milano
+   Note: - |  | {"chat_id":1,"items":1}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | root | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | root | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | root | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | root | - | settings_updated | Configurazione generale aggiornata |  | {}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | root | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | root | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | root2 | - | admin_username_changed | Username aggiornato da root a root2 |  | {}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | root2 | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | root2 | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | root2 | - | admin_password_changed | Password aggiornata |  | {}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | root2 | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | - | root2 | - | logout | Logout admin |  | {}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | root2 | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | root2 | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | founder | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | founder | - | admin_created | Creato admin operator |  | {"new_admin_id":2}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | SECURITY | admin_panel | 1 | founder | - | superadmin_transferred | Ruolo superadmin trasferito a operator |  | {"target_admin_id":2}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | SECURITY | admin_panel | 1 | founder | - | admin_deleted_self | Account admin eliminato volontariamente |  | {}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 2 | operator | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | founder | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | founder | - | admin_created | Creato admin operator |  | {"new_admin_id":2}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | - | founder | - | logout | Logout admin |  | {}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 2 | operator | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /chat -> 200 |  | {"endpoint":"chats","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti -> 200 |  | {"endpoint":"users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti/sospesi -> 200 |  | {"endpoint":"banned_users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /dashboard -> 302 |  | {"endpoint":"dashboard","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /menu -> 302 |  | {"endpoint":"menu_builder","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /stats -> 302 |  | {"endpoint":"stats","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /logs -> 302 |  | {"endpoint":"logs_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti -> 200 |  | {"endpoint":"users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | SECURITY | admin_panel | 2 | operator | - | user_banned | Utente 7777 bannato dal pannello utenti |  | {"target_user_id":7777}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /utenti/7777/sospensione -> 302 |  | {"endpoint":"user_suspend","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti/sospesi -> 200 |  | {"endpoint":"banned_users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti/sospesi -> 200 |  | {"endpoint":"banned_users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:13] | SECURITY | admin_panel | 2 | operator | - | user_unbanned | Utente 7777 sbannato dal pannello utenti |  | {"target_user_id":7777}
+[2026-02-19 02:01:13] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /utenti/7777/sospensione -> 302 |  | {"endpoint":"user_suspend","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /menu/node/new -> 302 |  | {"endpoint":"menu_new_node","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"node_id=10","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /menu/node/10/button/add -> 302 |  | {"endpoint":"menu_add_button","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"node_id=10","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /menu/button/13/update -> 302 |  | {"endpoint":"menu_update_button","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /chat/1/reply -> 302 |  | {"endpoint":"chat_reply","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /chat/1/close -> 302 |  | {"endpoint":"chat_close","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /chat/1/reopen -> 302 |  | {"endpoint":"chat_reopen","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | INFO | telegram_bot | 6666 | cmd6666 | Cmd | command | /home |  | {"content_type":"text"}
+[2026-02-19 02:01:14] | INFO | telegram_bot | 6666 | cmd6666 | Cmd | command | /close |  | {"content_type":"text"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /dashboard -> 200 |  | {"endpoint":"dashboard","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /stats -> 200 |  | {"endpoint":"stats","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /logs -> 200 |  | {"endpoint":"logs_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /stats/export/json -> 200 |  | {"endpoint":"stats_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /stats/export/csv -> 200 |  | {"endpoint":"stats_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /logs/export/json -> 200 |  | {"endpoint":"logs_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /logs/export/csv -> 200 |  | {"endpoint":"logs_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | adminrl | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | adminrl | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:01:14] | AUDIT | admin_panel | 1 | adminrl | - | admin_request | GET /setup -> 302 |  | {"endpoint":"setup","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /dashboard -> 200 |  | {"endpoint":"dashboard","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu/export -> 200 |  | {"endpoint":"menu_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /menu/import -> 302 |  | {"endpoint":"menu_import","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:01] | INFO | telegram_bot | 4444 | cart4444 | Carlo | order_submit | 🛒 Nuova richiesta ordine
+
+1. Cuffie Pro
+   Quantità: 1
+   Colore: Blu
+   Pagamento: Carta
+   Indirizzo: Via Roma 10, Milano
+   Note: - |  | {"chat_id":1,"items":1}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | root | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | root | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | root | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | root | - | settings_updated | Configurazione generale aggiornata |  | {}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | root | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | root | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | root2 | - | admin_username_changed | Username aggiornato da root a root2 |  | {}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | root2 | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | root2 | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | root2 | - | admin_password_changed | Password aggiornata |  | {}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | root2 | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | - | root2 | - | logout | Logout admin |  | {}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | root2 | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | root2 | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | founder | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | founder | - | admin_created | Creato admin operator |  | {"new_admin_id":2}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:01] | SECURITY | admin_panel | 1 | founder | - | superadmin_transferred | Ruolo superadmin trasferito a operator |  | {"target_admin_id":2}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:01] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | SECURITY | admin_panel | 1 | founder | - | admin_deleted_self | Account admin eliminato volontariamente |  | {}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 2 | operator | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | founder | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | founder | - | admin_created | Creato admin operator |  | {"new_admin_id":2}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | - | founder | - | logout | Logout admin |  | {}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 2 | operator | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /chat -> 200 |  | {"endpoint":"chats","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti -> 200 |  | {"endpoint":"users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti/sospesi -> 200 |  | {"endpoint":"banned_users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /dashboard -> 302 |  | {"endpoint":"dashboard","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /menu -> 302 |  | {"endpoint":"menu_builder","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /stats -> 302 |  | {"endpoint":"stats","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /logs -> 302 |  | {"endpoint":"logs_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti -> 200 |  | {"endpoint":"users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | SECURITY | admin_panel | 2 | operator | - | user_banned | Utente 7777 bannato dal pannello utenti |  | {"target_user_id":7777}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /utenti/7777/sospensione -> 302 |  | {"endpoint":"user_suspend","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti/sospesi -> 200 |  | {"endpoint":"banned_users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti/sospesi -> 200 |  | {"endpoint":"banned_users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | SECURITY | admin_panel | 2 | operator | - | user_unbanned | Utente 7777 sbannato dal pannello utenti |  | {"target_user_id":7777}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /utenti/7777/sospensione -> 302 |  | {"endpoint":"user_suspend","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | founder | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | founder | - | admin_created | Creato admin operator |  | {"new_admin_id":2}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | SECURITY | admin_panel | 1 | founder | - | admin_password_reset_by_superadmin | Password resettata per admin operator |  | {"target_admin_id":2}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | - | founder | - | logout | Logout admin |  | {}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 2 | operator | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | - | operator | - | logout | Logout admin |  | {}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | founder | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | founder | - | admin_created | Creato admin helper |  | {"new_admin_id":3}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | SECURITY | admin_panel | 1 | founder | - | admin_deleted_by_superadmin | Eliminato account admin helper |  | {"target_admin_id":3}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /menu/node/new -> 302 |  | {"endpoint":"menu_new_node","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"node_id=10","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /menu/node/10/button/add -> 302 |  | {"endpoint":"menu_add_button","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"node_id=10","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:02] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /menu/button/13/update -> 302 |  | {"endpoint":"menu_update_button","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /chat/1/reply -> 302 |  | {"endpoint":"chat_reply","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /chat/1/close -> 302 |  | {"endpoint":"chat_close","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /chat/1/reopen -> 302 |  | {"endpoint":"chat_reopen","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:03] | INFO | telegram_bot | 6666 | cmd6666 | Cmd | command | /home |  | {"content_type":"text"}
+[2026-02-19 02:37:03] | INFO | telegram_bot | 6666 | cmd6666 | Cmd | command | /close |  | {"content_type":"text"}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /dashboard -> 200 |  | {"endpoint":"dashboard","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /stats -> 200 |  | {"endpoint":"stats","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /logs -> 200 |  | {"endpoint":"logs_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /stats/export/json -> 200 |  | {"endpoint":"stats_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /stats/export/csv -> 200 |  | {"endpoint":"stats_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /logs/export/json -> 200 |  | {"endpoint":"logs_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /logs/export/csv -> 200 |  | {"endpoint":"logs_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | adminrl | - | login_success | Login admin completato |  | {}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | adminrl | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 02:37:03] | AUDIT | admin_panel | 1 | adminrl | - | admin_request | GET /setup -> 302 |  | {"endpoint":"setup","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:06] | INFO | telegram_bot | 5555 | cb5555 | Callback | button | nav:home |  | {"callback":true}
+[2026-02-19 17:55:06] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:55:06] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:06] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /dashboard -> 200 |  | {"endpoint":"dashboard","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:06] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:55:06] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:06] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu/export -> 200 |  | {"endpoint":"menu_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:06] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:06] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /menu/import -> 302 |  | {"endpoint":"menu_import","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:06] | INFO | telegram_bot | 4444 | cart4444 | Carlo | order_submit | 🛒 Nuova richiesta ordine
+
+1. Cuffie Pro
+   Quantità: 1
+   Colore: Blu
+   Pagamento: Carta
+   Indirizzo: Via Roma 10, Milano
+   Note: - |  | {"chat_id":1,"items":1}
+[2026-02-19 17:55:06] | INFO | telegram_bot | 5555 | cb5555 | Callback | button | nav:home |  | {"callback":true}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | root | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | root | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | root | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | root | - | settings_updated | Configurazione generale aggiornata |  | {}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | root | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | root | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | root2 | - | admin_username_changed | Username aggiornato da root a root2 |  | {}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | root2 | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | root2 | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | root2 | - | admin_password_changed | Password aggiornata |  | {}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | root2 | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | - | root2 | - | logout | Logout admin |  | {}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | root2 | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | root2 | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | founder | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | founder | - | admin_created | Creato admin operator |  | {"new_admin_id":2}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | SECURITY | admin_panel | 1 | founder | - | superadmin_transferred | Ruolo superadmin trasferito a operator |  | {"target_admin_id":2}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | SECURITY | admin_panel | 1 | founder | - | admin_deleted_self | Account admin eliminato volontariamente |  | {}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 2 | operator | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | founder | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | founder | - | admin_created | Creato admin operator |  | {"new_admin_id":2}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | - | founder | - | logout | Logout admin |  | {}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 2 | operator | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /chat -> 200 |  | {"endpoint":"chats","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti -> 200 |  | {"endpoint":"users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti/sospesi -> 200 |  | {"endpoint":"banned_users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /dashboard -> 302 |  | {"endpoint":"dashboard","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /menu -> 302 |  | {"endpoint":"menu_builder","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /stats -> 302 |  | {"endpoint":"stats","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /logs -> 302 |  | {"endpoint":"logs_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti -> 200 |  | {"endpoint":"users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | SECURITY | admin_panel | 2 | operator | - | user_banned | Utente 7777 bannato dal pannello utenti |  | {"target_user_id":7777}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /utenti/7777/sospensione -> 302 |  | {"endpoint":"user_suspend","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti/sospesi -> 200 |  | {"endpoint":"banned_users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti/sospesi -> 200 |  | {"endpoint":"banned_users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:07] | SECURITY | admin_panel | 2 | operator | - | user_unbanned | Utente 7777 sbannato dal pannello utenti |  | {"target_user_id":7777}
+[2026-02-19 17:55:07] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /utenti/7777/sospensione -> 302 |  | {"endpoint":"user_suspend","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | founder | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | founder | - | admin_created | Creato admin operator |  | {"new_admin_id":2}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | SECURITY | admin_panel | 1 | founder | - | admin_password_reset_by_superadmin | Password resettata per admin operator |  | {"target_admin_id":2}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | - | founder | - | logout | Logout admin |  | {}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 2 | operator | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | - | operator | - | logout | Logout admin |  | {}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | founder | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | founder | - | admin_created | Creato admin helper |  | {"new_admin_id":3}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | SECURITY | admin_panel | 1 | founder | - | admin_deleted_by_superadmin | Eliminato account admin helper |  | {"target_admin_id":3}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /menu/node/new -> 302 |  | {"endpoint":"menu_new_node","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"node_id=10","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /menu/node/10/button/add -> 302 |  | {"endpoint":"menu_add_button","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"node_id=10","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /menu/button/13/update -> 302 |  | {"endpoint":"menu_update_button","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /chat/1/reply -> 302 |  | {"endpoint":"chat_reply","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /chat/1/close -> 302 |  | {"endpoint":"chat_close","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /chat/1/reopen -> 302 |  | {"endpoint":"chat_reopen","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | INFO | telegram_bot | 6666 | cmd6666 | Cmd | command | /home |  | {"content_type":"text"}
+[2026-02-19 17:55:08] | INFO | telegram_bot | 6666 | cmd6666 | Cmd | command | /close |  | {"content_type":"text"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /dashboard -> 200 |  | {"endpoint":"dashboard","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:08] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:09] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /stats -> 200 |  | {"endpoint":"stats","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:09] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /logs -> 200 |  | {"endpoint":"logs_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:09] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /stats/export/json -> 200 |  | {"endpoint":"stats_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:09] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /stats/export/csv -> 200 |  | {"endpoint":"stats_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:09] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /logs/export/json -> 200 |  | {"endpoint":"logs_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:09] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /logs/export/csv -> 200 |  | {"endpoint":"logs_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:09] | AUDIT | admin_panel | 1 | adminrl | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:55:09] | AUDIT | admin_panel | 1 | adminrl | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:55:09] | AUDIT | admin_panel | 1 | adminrl | - | admin_request | GET /setup -> 302 |  | {"endpoint":"setup","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /dashboard -> 200 |  | {"endpoint":"dashboard","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu/export -> 200 |  | {"endpoint":"menu_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /menu/import -> 302 |  | {"endpoint":"menu_import","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:14] | INFO | telegram_bot | 4444 | cart4444 | Carlo | order_submit | 🛒 Nuova richiesta ordine
+
+1. Cuffie Pro
+   Quantità: 1
+   Colore: Blu
+   Pagamento: Carta
+   Indirizzo: Via Roma 10, Milano
+   Note: - |  | {"chat_id":1,"items":1}
+[2026-02-19 17:56:14] | INFO | telegram_bot | 5555 | cb5555 | Callback | button | nav:home |  | {"callback":true}
+[2026-02-19 17:56:14] | INFO | telegram_bot | 5656 | btn5656 | Button | button | btn:42 |  | {"callback":true}
+[2026-02-19 17:56:14] | INFO | telegram_bot | 5757 | safe5757 | Safe | button | nav:home |  | {"callback":true}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | root | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | root | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | root | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | root | - | settings_updated | Configurazione generale aggiornata |  | {}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | root | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | root | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | root2 | - | admin_username_changed | Username aggiornato da root a root2 |  | {}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | root2 | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | root2 | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | root2 | - | admin_password_changed | Password aggiornata |  | {}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | root2 | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | - | root2 | - | logout | Logout admin |  | {}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | root2 | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | root2 | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | founder | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | founder | - | admin_created | Creato admin operator |  | {"new_admin_id":2}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:14] | SECURITY | admin_panel | 1 | founder | - | superadmin_transferred | Ruolo superadmin trasferito a operator |  | {"target_admin_id":2}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:14] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | SECURITY | admin_panel | 1 | founder | - | admin_deleted_self | Account admin eliminato volontariamente |  | {}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 2 | operator | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | founder | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | founder | - | admin_created | Creato admin operator |  | {"new_admin_id":2}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | - | founder | - | logout | Logout admin |  | {}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 2 | operator | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /chat -> 200 |  | {"endpoint":"chats","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti -> 200 |  | {"endpoint":"users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti/sospesi -> 200 |  | {"endpoint":"banned_users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /dashboard -> 302 |  | {"endpoint":"dashboard","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /menu -> 302 |  | {"endpoint":"menu_builder","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /stats -> 302 |  | {"endpoint":"stats","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /logs -> 302 |  | {"endpoint":"logs_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti -> 200 |  | {"endpoint":"users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | SECURITY | admin_panel | 2 | operator | - | user_banned | Utente 7777 bannato dal pannello utenti |  | {"target_user_id":7777}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /utenti/7777/sospensione -> 302 |  | {"endpoint":"user_suspend","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti/sospesi -> 200 |  | {"endpoint":"banned_users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 2 | operator | - | admin_request | GET /utenti/sospesi -> 200 |  | {"endpoint":"banned_users_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | SECURITY | admin_panel | 2 | operator | - | user_unbanned | Utente 7777 sbannato dal pannello utenti |  | {"target_user_id":7777}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /utenti/7777/sospensione -> 302 |  | {"endpoint":"user_suspend","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | founder | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | founder | - | admin_created | Creato admin operator |  | {"new_admin_id":2}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | SECURITY | admin_panel | 1 | founder | - | admin_password_reset_by_superadmin | Password resettata per admin operator |  | {"target_admin_id":2}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | - | founder | - | logout | Logout admin |  | {}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 2 | operator | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 2 | operator | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | - | operator | - | logout | Logout admin |  | {}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | founder | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | founder | - | admin_created | Creato admin helper |  | {"new_admin_id":3}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | founder | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | SECURITY | admin_panel | 1 | founder | - | admin_deleted_by_superadmin | Eliminato account admin helper |  | {"target_admin_id":3}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | founder | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /menu/node/new -> 302 |  | {"endpoint":"menu_new_node","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"node_id=10","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /menu/node/10/button/add -> 302 |  | {"endpoint":"menu_add_button","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"node_id=10","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:15] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /menu/button/13/update -> 302 |  | {"endpoint":"menu_update_button","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /chat/1/reply -> 302 |  | {"endpoint":"chat_reply","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /chat/1/close -> 302 |  | {"endpoint":"chat_close","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /chat/1/reopen -> 302 |  | {"endpoint":"chat_reopen","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:16] | INFO | telegram_bot | 6666 | cmd6666 | Cmd | command | /home |  | {"content_type":"text"}
+[2026-02-19 17:56:16] | INFO | telegram_bot | 6666 | cmd6666 | Cmd | command | /close |  | {"content_type":"text"}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /dashboard -> 200 |  | {"endpoint":"dashboard","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /stats -> 200 |  | {"endpoint":"stats","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /logs -> 200 |  | {"endpoint":"logs_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /stats/export/json -> 200 |  | {"endpoint":"stats_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /stats/export/csv -> 200 |  | {"endpoint":"stats_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /logs/export/json -> 200 |  | {"endpoint":"logs_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /logs/export/csv -> 200 |  | {"endpoint":"logs_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | adminrl | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | adminrl | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:56:16] | AUDIT | admin_panel | 1 | adminrl | - | admin_request | GET /setup -> 302 |  | {"endpoint":"setup","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:59:34] | AUDIT | admin_panel | 1 | admin | - | login_success | Login admin completato |  | {}
+[2026-02-19 17:59:34] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:59:34] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /dashboard -> 200 |  | {"endpoint":"dashboard","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:59:34] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:59:34] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /stats -> 200 |  | {"endpoint":"stats","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:59:34] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /logs -> 200 |  | {"endpoint":"logs_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:59:34] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:59:34] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat -> 200 |  | {"endpoint":"chats","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:59:34] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu/export -> 200 |  | {"endpoint":"menu_export","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:59:34] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:59:34] | AUDIT | admin_panel | 1 | admin | - | settings_updated | Configurazione generale aggiornata |  | {}
+[2026-02-19 17:59:34] | AUDIT | admin_panel | 1 | admin | - | admin_request | POST /impostazioni -> 302 |  | {"endpoint":"settings_page","query":"","status":302,"remote_addr":"127.0.0.1"}
+[2026-02-19 17:59:34] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 22:38:12] | INFO | preview | 90001 | user90001 | Mario | preview_seed | Dati demo anteprima UI |  | {}
+[2026-02-19 22:38:12] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /dashboard -> 200 |  | {"endpoint":"dashboard","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 22:38:12] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat -> 200 |  | {"endpoint":"chats","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 22:38:12] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /chat/1 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 22:38:12] | AUDIT | admin_panel | 1 | admin | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"","status":200,"remote_addr":"127.0.0.1"}
+[2026-02-19 21:50:41] | AUDIT | admin_panel | 1 | luca | - | login_success | Login admin completato |  | {}
+[2026-02-19 21:50:41] | AUDIT | admin_panel | 1 | luca | - | admin_request | POST /login -> 302 |  | {"endpoint":"login","query":"","status":302,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:50:42] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /dashboard -> 200 |  | {"endpoint":"dashboard","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:50:45] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /dashboard -> 200 |  | {"endpoint":"dashboard","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:50:46] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /dashboard -> 200 |  | {"endpoint":"dashboard","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:50:50] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /utenti -> 200 |  | {"endpoint":"users_page","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:51:10] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | command | /start |  | {"chat_id":1139032145}
+[2026-02-19 21:51:10] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Ciao! 👋
+
+Benvenuto nel nostro bot
+Seleziona una sezione per continuare. |  | {"type":"text"}
+[2026-02-19 21:51:10] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | menu_view | Start | Start | {"node_id":1}
+[2026-02-19 21:51:14] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /chat -> 200 |  | {"endpoint":"chats","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:51:15] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /chat/12 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:51:20] | INFO | telegram_bot | 7461822136 | PIETRO3425 | pietro | bot_outgoing | fra chiudo qui |  | {"type":"text"}
+[2026-02-19 21:51:20] | AUDIT | admin_panel | 1 | luca | - | admin_request | POST /chat/12/reply -> 302 |  | {"endpoint":"chat_reply","query":"","status":302,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:51:20] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /chat/12 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:51:23] | INFO | telegram_bot | 7461822136 | PIETRO3425 | pietro | bot_outgoing | La tua richiesta è stata chiusa dall'amministratore.
+Se hai ancora bisogno, apri una nuova chat da Supporto. |  | {"type":"text"}
+[2026-02-19 21:51:23] | AUDIT | admin_panel | 1 | luca | - | admin_request | POST /chat/12/close -> 302 |  | {"endpoint":"chat_close","query":"","status":302,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:51:23] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /chat/12 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:51:24] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /chat -> 200 |  | {"endpoint":"chats","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:51:25] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /chat/13 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:51:32] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | spiacnte non gli abbiamo |  | {"type":"text"}
+[2026-02-19 21:51:32] | AUDIT | admin_panel | 1 | luca | - | admin_request | POST /chat/13/reply -> 302 |  | {"endpoint":"chat_reply","query":"","status":302,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:51:32] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /chat/13 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:51:34] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | La tua richiesta è stata chiusa dall'amministratore.
+Se hai ancora bisogno, apri una nuova chat da Supporto. |  | {"type":"text"}
+[2026-02-19 21:51:34] | AUDIT | admin_panel | 1 | luca | - | admin_request | POST /chat/13/close -> 302 |  | {"endpoint":"chat_close","query":"","status":302,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:51:34] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /chat/13 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:51:36] | AUDIT | admin_panel | 1 | luca | - | admin_request | POST /chat/13/reopen -> 302 |  | {"endpoint":"chat_reopen","query":"","status":302,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:51:36] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /chat/13 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:51:38] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | La tua richiesta è stata chiusa dall'amministratore.
+Se hai ancora bisogno, apri una nuova chat da Supporto. |  | {"type":"text"}
+[2026-02-19 21:51:38] | AUDIT | admin_panel | 1 | luca | - | admin_request | POST /chat/13/close -> 302 |  | {"endpoint":"chat_close","query":"","status":302,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:51:38] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /chat/13 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:51:39] | AUDIT | admin_panel | 1 | luca | - | admin_request | POST /chat/13/reopen -> 302 |  | {"endpoint":"chat_reopen","query":"","status":302,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:51:39] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /chat/13 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:51:41] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | La tua richiesta è stata chiusa dall'amministratore.
+Se hai ancora bisogno, apri una nuova chat da Supporto. |  | {"type":"text"}
+[2026-02-19 21:51:41] | AUDIT | admin_panel | 1 | luca | - | admin_request | POST /chat/13/close -> 302 |  | {"endpoint":"chat_close","query":"","status":302,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:51:41] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /chat/13 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:51:46] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | command | /start |  | {"chat_id":1139032145}
+[2026-02-19 21:51:46] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Ciao! 👋
+
+Benvenuto nel nostro bot
+Seleziona una sezione per continuare. |  | {"type":"text"}
+[2026-02-19 21:51:46] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | menu_view | Start | Start | {"node_id":1}
+[2026-02-19 21:51:48] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | button | chat:close |  | {"callback":true}
+[2026-02-19 21:51:48] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Non hai chat attive. |  | {"type":"text"}
+[2026-02-19 21:51:51] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | button | btn:2 |  | {"callback":true}
+[2026-02-19 21:51:51] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Per contattarci avvia una chat usando il tasto qui sotto, ti risponderemo asap |  | {"type":"text"}
+[2026-02-19 21:51:51] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | menu_view | Supporto | Start > Supporto | {"node_id":3}
+[2026-02-19 21:51:52] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | button | btn:22 |  | {"callback":true}
+[2026-02-19 21:51:52] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Chat avviata. Scrivi qui il tuo messaggio per l'amministratore.
+Per chiudere rapidamente usa /close. |  | {"type":"text"}
+[2026-02-19 21:51:55] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /chat -> 200 |  | {"endpoint":"chats","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:51:58] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | command | /start |  | {"chat_id":1139032145}
+[2026-02-19 21:51:58] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Ciao! 👋
+
+Benvenuto nel nostro bot
+Seleziona una sezione per continuare. |  | {"type":"text"}
+[2026-02-19 21:51:58] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | menu_view | Start | Start | {"node_id":1}
+[2026-02-19 21:51:59] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | button | btn:1 |  | {"callback":true}
+[2026-02-19 21:52:00] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Catalogo prodotti
+Scegli una categoria e poi un articolo. |  | {"type":"text"}
+[2026-02-19 21:52:00] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | menu_view | Catalogo | Start > Catalogo | {"node_id":2}
+[2026-02-19 21:52:00] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | button | btn:16 |  | {"callback":true}
+[2026-02-19 21:52:01] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Categoria Drugs |  | {"type":"text"}
+[2026-02-19 21:52:01] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | menu_view | Drugs | Start > Catalogo > Drugs | {"node_id":5}
+[2026-02-19 21:52:02] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | button | btn:14 |  | {"callback":true}
+[2026-02-19 21:52:02] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Drug 1
+- Categoria
+
+Prezzo: 399€ |  | {"type":"text"}
+[2026-02-19 21:52:02] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | menu_view | Drug 1 | Start > Catalogo > Drugs > Drug 1 | {"node_id":7}
+[2026-02-19 21:52:03] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | button | btn:21 |  | {"callback":true}
+[2026-02-19 21:52:03] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Ordine: Drug 1
+Inserisci la quantità desiderata (numero). |  | {"type":"text"}
+[2026-02-19 21:52:04] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | message | 3456y |  | {"content_type":"text"}
+[2026-02-19 21:52:04] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Inserisci una quantità valida (numero maggiore di zero). |  | {"type":"text"}
+[2026-02-19 21:52:05] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | message | 43rtrhy |  | {"content_type":"text"}
+[2026-02-19 21:52:05] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Inserisci una quantità valida (numero maggiore di zero). |  | {"type":"text"}
+[2026-02-19 21:52:06] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | message | 4rgtbrt |  | {"content_type":"text"}
+[2026-02-19 21:52:06] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Inserisci una quantità valida (numero maggiore di zero). |  | {"type":"text"}
+[2026-02-19 21:52:07] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | message | rfgvbrt4 |  | {"content_type":"text"}
+[2026-02-19 21:52:07] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Inserisci una quantità valida (numero maggiore di zero). |  | {"type":"text"}
+[2026-02-19 21:52:08] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | message | rfgtfr |  | {"content_type":"text"}
+[2026-02-19 21:52:08] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Inserisci una quantità valida (numero maggiore di zero). |  | {"type":"text"}
+[2026-02-19 21:52:10] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | message | 435 |  | {"content_type":"text"}
+[2026-02-19 21:52:10] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Inserisci il colore preferito. |  | {"type":"text"}
+[2026-02-19 21:52:11] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | message | gfb |  | {"content_type":"text"}
+[2026-02-19 21:52:11] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Metodo di pagamento preferito? |  | {"type":"text"}
+[2026-02-19 21:52:12] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | message | fre |  | {"content_type":"text"}
+[2026-02-19 21:52:13] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Inserisci l'indirizzo di consegna.
+Puoi scrivere 'stesso' per riusare: - |  | {"type":"text"}
+[2026-02-19 21:52:14] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | message | rfg |  | {"content_type":"text"}
+[2026-02-19 21:52:14] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Note aggiuntive? (scrivi - se nessuna) |  | {"type":"text"}
+[2026-02-19 21:52:15] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | message | fre |  | {"content_type":"text"}
+[2026-02-19 21:52:15] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Articolo aggiunto al carrello.
+
+🛒 Carrello attuale
+
+1. Drug 1
+   Qta: 435
+   Colore: gfb
+   Pagamento: fre
+   Indirizzo: rfg
+   Note: fre |  | {"type":"text"}
+[2026-02-19 21:52:17] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | button | order:submit |  | {"callback":true}
+[2026-02-19 21:52:17] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | order_submit | 🛒 Nuova richiesta ordine
+
+1. Drug 1
+   Quantità: 435
+   Colore: gfb
+   Pagamento: fre
+   Indirizzo: rfg
+   Note: fre |  | {"chat_id":14,"items":1}
+[2026-02-19 21:52:17] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Ordine inviato. Un amministratore ti risponderà in questa chat. |  | {"type":"text"}
+[2026-02-19 21:52:20] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /chat -> 200 |  | {"endpoint":"chats","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:52:20] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /chat -> 200 |  | {"endpoint":"chats","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:52:21] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /chat/14 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:52:26] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | La tua richiesta è stata chiusa dall'amministratore.
+Se hai ancora bisogno, apri una nuova chat da Supporto. |  | {"type":"text"}
+[2026-02-19 21:52:26] | AUDIT | admin_panel | 1 | luca | - | admin_request | POST /chat/14/close -> 302 |  | {"endpoint":"chat_close","query":"","status":302,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:52:26] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /chat/14 -> 200 |  | {"endpoint":"chat_detail","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:52:28] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /chat -> 200 |  | {"endpoint":"chats","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:52:32] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | command | /start |  | {"chat_id":1139032145}
+[2026-02-19 21:52:32] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Ciao! 👋
+
+Benvenuto nel nostro bot
+Seleziona una sezione per continuare. |  | {"type":"text"}
+[2026-02-19 21:52:32] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | menu_view | Start | Start | {"node_id":1}
+[2026-02-19 21:52:33] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | button | btn:2 |  | {"callback":true}
+[2026-02-19 21:52:33] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Per contattarci avvia una chat usando il tasto qui sotto, ti risponderemo asap |  | {"type":"text"}
+[2026-02-19 21:52:33] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | menu_view | Supporto | Start > Supporto | {"node_id":3}
+[2026-02-19 21:52:34] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | button | btn:22 |  | {"callback":true}
+[2026-02-19 21:52:34] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Chat avviata. Scrivi qui il tuo messaggio per l'amministratore.
+Per chiudere rapidamente usa /close. |  | {"type":"text"}
+[2026-02-19 21:52:35] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | command | /start |  | {"chat_id":1139032145}
+[2026-02-19 21:52:36] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Ciao! 👋
+
+Benvenuto nel nostro bot
+Seleziona una sezione per continuare. |  | {"type":"text"}
+[2026-02-19 21:52:36] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | menu_view | Start | Start | {"node_id":1}
+[2026-02-19 21:52:36] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | button | btn:2 |  | {"callback":true}
+[2026-02-19 21:52:37] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Per contattarci avvia una chat usando il tasto qui sotto, ti risponderemo asap |  | {"type":"text"}
+[2026-02-19 21:52:37] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | menu_view | Supporto | Start > Supporto | {"node_id":3}
+[2026-02-19 21:52:37] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | button | btn:22 |  | {"callback":true}
+[2026-02-19 21:52:37] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Chat avviata. Scrivi qui il tuo messaggio per l'amministratore.
+Per chiudere rapidamente usa /close. |  | {"type":"text"}
+[2026-02-19 21:52:40] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /chat -> 200 |  | {"endpoint":"chats","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:52:42] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | button | chat:close |  | {"callback":true}
+[2026-02-19 21:52:42] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Chat chiusa. Puoi riaprirla da Supporto quando vuoi. |  | {"type":"text"}
+[2026-02-19 21:52:50] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /chat -> 200 |  | {"endpoint":"chats","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:52:56] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | command | /start |  | {"chat_id":1139032145}
+[2026-02-19 21:52:56] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Ciao! 👋
+
+Benvenuto nel nostro bot
+Seleziona una sezione per continuare. |  | {"type":"text"}
+[2026-02-19 21:52:56] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | menu_view | Start | Start | {"node_id":1}
+[2026-02-19 21:52:58] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /utenti -> 200 |  | {"endpoint":"users_page","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:52:58] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /utenti/sospesi -> 200 |  | {"endpoint":"banned_users_page","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:53:00] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /dashboard -> 200 |  | {"endpoint":"dashboard","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:53:01] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:53:02] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /dashboard -> 200 |  | {"endpoint":"dashboard","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:53:19] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | command | /start |  | {"chat_id":1139032145}
+[2026-02-19 21:53:19] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Ciao! 👋
+
+Benvenuto nel nostro bot
+Seleziona una sezione per continuare. |  | {"type":"text"}
+[2026-02-19 21:53:19] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | menu_view | Start | Start | {"node_id":1}
+[2026-02-19 21:53:21] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /dashboard -> 200 |  | {"endpoint":"dashboard","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:53:24] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /dashboard -> 200 |  | {"endpoint":"dashboard","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:53:26] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /menu -> 200 |  | {"endpoint":"menu_builder","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:53:30] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /stats -> 200 |  | {"endpoint":"stats","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:53:31] | AUDIT | admin_panel | 1 | luca | - | admin_request | GET /impostazioni -> 200 |  | {"endpoint":"settings_page","query":"","status":200,"remote_addr":"95.233.46.126"}
+[2026-02-19 21:56:16] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | command | /start |  | {"chat_id":1139032145}
+[2026-02-19 21:56:16] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Ciao! 👋
+
+Benvenuto nel nostro bot
+Seleziona una sezione per continuare. |  | {"type":"text"}
+[2026-02-19 21:56:16] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | menu_view | Start | Start | {"node_id":1}
+[2026-02-19 21:56:17] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | button | btn:2 |  | {"callback":true}
+[2026-02-19 21:56:17] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Per contattarci avvia una chat usando il tasto qui sotto, ti risponderemo asap |  | {"type":"text"}
+[2026-02-19 21:56:17] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | menu_view | Supporto | Start > Supporto | {"node_id":3}
+[2026-02-19 21:56:18] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | button | btn:22 |  | {"callback":true}
+[2026-02-19 21:56:18] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Chat avviata. Scrivi qui il tuo messaggio per l'amministratore.
+Per chiudere rapidamente usa /close. |  | {"type":"text"}
+[2026-02-19 21:56:20] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | command | /close |  | {"content_type":"text"}
+[2026-02-19 21:56:20] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Chat chiusa. Puoi riaprirla da Supporto quando vuoi. |  | {"type":"text"}
+[2026-02-19 21:56:21] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | command | /close |  | {"content_type":"text"}
+[2026-02-19 21:56:21] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Non hai chat attive. |  | {"type":"text"}
+[2026-02-19 21:56:23] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | command | /start |  | {"chat_id":1139032145}
+[2026-02-19 21:56:23] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Ciao! 👋
+
+Benvenuto nel nostro bot
+Seleziona una sezione per continuare. |  | {"type":"text"}
+[2026-02-19 21:56:23] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | menu_view | Start | Start | {"node_id":1}
+[2026-02-19 22:50:25] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | command | /start |  | {"chat_id":1139032145}
+[2026-02-19 22:50:25] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Ciao! 👋
+
+Benvenuto nel nostro bot
+Seleziona una sezione per continuare. |  | {"type":"text"}
+[2026-02-19 22:50:25] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | menu_view | Start | Start | {"node_id":1}
+[2026-02-19 22:50:26] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | button | btn:2 |  | {"callback":true}
+[2026-02-19 22:50:26] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Per contattarci avvia una chat usando il tasto qui sotto, ti risponderemo asap |  | {"type":"text"}
+[2026-02-19 22:50:26] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | menu_view | Supporto | Start > Supporto | {"node_id":3}
+[2026-02-19 22:50:27] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | button | nav:home |  | {"callback":true}
+[2026-02-19 22:50:28] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Ciao! 👋
+
+Benvenuto nel nostro bot
+Seleziona una sezione per continuare. |  | {"type":"text"}
+[2026-02-19 22:50:28] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | menu_view | Start | Start | {"node_id":1}
+[2026-02-20 00:38:07] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | command | /start |  | {"chat_id":1139032145}
+[2026-02-20 00:38:07] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Ciao! 👋
+
+Benvenuto nel nostro bot
+Seleziona una sezione per continuare. |  | {"type":"text"}
+[2026-02-20 00:38:07] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | menu_view | Start | Start | {"node_id":1}
+[2026-02-20 01:47:55] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | command | /start |  | {"chat_id":1139032145}
+[2026-02-20 01:47:55] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Ciao! 👋
+
+Benvenuto nel nostro bot
+Seleziona una sezione per continuare. |  | {"type":"text"}
+[2026-02-20 01:47:55] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | menu_view | Start | Start | {"node_id":1}
+[2026-02-20 01:47:56] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | button | btn:2 |  | {"callback":true}
+[2026-02-20 01:47:56] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Per contattarci avvia una chat usando il tasto qui sotto, ti risponderemo asap |  | {"type":"text"}
+[2026-02-20 01:47:56] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | menu_view | Supporto | Start > Supporto | {"node_id":3}
+[2026-02-20 01:47:57] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | button | btn:22 |  | {"callback":true}
+[2026-02-20 01:47:57] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Chat avviata. Scrivi qui il tuo messaggio per l'amministratore.
+Per chiudere rapidamente usa /close. |  | {"type":"text"}
+[2026-02-20 01:47:58] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | command | /close |  | {"content_type":"text"}
+[2026-02-20 01:47:58] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Chat chiusa. Puoi riaprirla da Supporto quando vuoi. |  | {"type":"text"}
+[2026-02-20 01:47:59] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | command | /close |  | {"content_type":"text"}
+[2026-02-20 01:48:00] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Non hai chat attive. |  | {"type":"text"}
+[2026-02-20 01:48:02] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | command | /start |  | {"chat_id":1139032145}
+[2026-02-20 01:48:02] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | bot_outgoing | Ciao! 👋
+
+Benvenuto nel nostro bot
+Seleziona una sezione per continuare. |  | {"type":"text"}
+[2026-02-20 01:48:02] | INFO | telegram_bot | 1139032145 | OverloadedTech | ovtd | menu_view | Start | Start | {"node_id":1}

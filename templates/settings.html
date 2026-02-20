@@ -1,0 +1,285 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="section-title">Impostazioni di Sistema</h1>
+
+<div class="grid-2">
+  {% if is_superadmin %}
+  <section class="card">
+    <h3>Configurazione Generale</h3>
+    <form method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="action" value="save_settings">
+
+      <div class="form-group">
+        <label>
+          <input style="width:auto;" type="checkbox" name="back_button_enabled" value="1" {% if settings.back_button_enabled == '1' %}checked{% endif %}>
+          Pulsante Indietro
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>
+          <input style="width:auto;" type="checkbox" name="home_button_enabled" value="1" {% if settings.home_button_enabled == '1' %}checked{% endif %}>
+          Pulsante Home
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>
+          <input style="width:auto;" type="checkbox" name="contact_admin_enabled" value="1" {% if settings.contact_admin_enabled == '1' %}checked{% endif %}>
+          Contatta Admin Abilitato
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>
+          <input style="width:auto;" type="checkbox" name="chat_command_enabled" value="1" {% if settings.chat_command_enabled == '1' %}checked{% endif %}>
+          Comando Chat Abilitato
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>Nome comando chat personalizzato (senza /)</label>
+        <input name="chat_command_name" maxlength="64" value="{{ settings.chat_command_name }}" placeholder="chat">
+      </div>
+
+      <div class="form-group">
+        <label>
+          <input style="width:auto;" type="checkbox" name="lockdown_mode" value="1" {% if settings.lockdown_mode == '1' %}checked{% endif %}>
+          Modalità Lockdown
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>Messaggio Manutenzione</label>
+        <textarea name="lockdown_message" maxlength="2000">{{ settings.lockdown_message }}</textarea>
+      </div>
+
+      <button class="btn primary" style="margin-top:0.8rem;">Salva Modifiche</button>
+    </form>
+  </section>
+  {% else %}
+  <section class="card">
+    <h3>Configurazione Generale</h3>
+    <div class="tag warn">Area riservata al superadmin.</div>
+    <div class="metric-sub block-gap-small">
+      Con il ruolo admin puoi gestire profilo, chat e moderazione utenti.
+    </div>
+  </section>
+  {% endif %}
+
+  <section class="card">
+    <h3>Profilo Admin</h3>
+    <div class="metric-sub">Utente corrente: <strong>{{ current_admin.username }}</strong> ({{ current_admin.role }})</div>
+
+    <div class="hr"></div>
+    <h4 style="margin-top:0;">Cambia Username</h4>
+    <form method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="action" value="change_username">
+      <div class="form-group">
+        <label>Nuovo Username</label>
+        <input name="new_username" minlength="3" maxlength="64" required>
+      </div>
+      <div class="form-group block-gap-small">
+        <label>Password Attuale</label>
+        <input name="current_password" type="password" required>
+      </div>
+      <button class="btn" style="margin-top:0.8rem;">Aggiorna Username</button>
+    </form>
+
+    <div class="hr"></div>
+    <h4 style="margin-top:0;">Cambia Password</h4>
+    <form method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="action" value="change_password">
+
+      <div class="form-group">
+        <label>Password Attuale</label>
+        <input name="current_password" type="password" required>
+      </div>
+
+      <div class="form-group block-gap-small">
+        <label>Nuova Password</label>
+        <input name="new_password" type="password" minlength="8" required>
+      </div>
+
+      <div class="form-group block-gap-small">
+        <label>Conferma Nuova Password</label>
+        <input name="confirm_password" type="password" minlength="8" required>
+      </div>
+
+      <button class="btn" style="margin-top:0.8rem;">Aggiorna Password</button>
+    </form>
+  </section>
+</div>
+
+{% if is_superadmin %}
+<div class="grid-2 block-gap">
+  <section class="card">
+    <h3>Gestione Admin</h3>
+    <div class="metric-sub">Solo il superadmin può creare admin, trasferire il ruolo, resettare password e rimuovere account admin.</div>
+
+    <div class="hr"></div>
+    <h4 style="margin-top:0;">Crea Nuovo Admin</h4>
+    <form method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="action" value="create_admin">
+      <div class="form-group">
+        <label>Username Nuovo Admin</label>
+        <input name="new_admin_username" minlength="3" maxlength="64" required>
+      </div>
+      <div class="form-group block-gap-small">
+        <label>Password Nuovo Admin</label>
+        <input name="new_admin_password" type="password" minlength="8" required>
+      </div>
+      <div class="form-group block-gap-small">
+        <label>Conferma Password</label>
+        <input name="new_admin_password_confirm" type="password" minlength="8" required>
+      </div>
+      <button class="btn primary" style="margin-top:0.8rem;">Crea Admin</button>
+    </form>
+
+    <div class="hr"></div>
+    <h4 style="margin-top:0;">Trasferisci Superadmin</h4>
+    <form method="post" data-confirm="Confermi il trasferimento del ruolo superadmin?">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="action" value="transfer_superadmin">
+      <div class="form-group">
+        <label>Admin Destinatario</label>
+        <select name="target_admin_id" required>
+          <option value="">Seleziona admin</option>
+          {% for row in admins %}
+            {% if row.id != current_admin.id %}
+              <option value="{{ row.id }}">{{ row.username }} ({{ row.role }})</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group block-gap-small">
+        <label>Password Attuale (conferma)</label>
+        <input name="current_password" type="password" required>
+      </div>
+      <button class="btn danger" style="margin-top:0.8rem;">Trasferisci Ruolo</button>
+    </form>
+
+    <div class="hr"></div>
+    <h4 style="margin-top:0;">Reset Password Admin</h4>
+    <form method="post" data-confirm="Confermi il reset password per l'admin selezionato?">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="action" value="reset_admin_password">
+      <div class="form-group">
+        <label>Admin Destinatario</label>
+        <select name="target_admin_id" required>
+          <option value="">Seleziona admin</option>
+          {% for row in admins %}
+            {% if row.id != current_admin.id and row.role == 'admin' %}
+              <option value="{{ row.id }}">{{ row.username }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group block-gap-small">
+        <label>Nuova Password</label>
+        <input name="new_password" type="password" minlength="8" required>
+      </div>
+      <div class="form-group block-gap-small">
+        <label>Conferma Nuova Password</label>
+        <input name="new_password_confirm" type="password" minlength="8" required>
+      </div>
+      <button class="btn" style="margin-top:0.8rem;">Reset Password</button>
+    </form>
+
+    <div class="hr"></div>
+    <h4 style="margin-top:0;">Elimina Account Admin</h4>
+    <form method="post" data-confirm="Confermi l'eliminazione definitiva dell'admin selezionato?">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="action" value="delete_admin_account">
+      <div class="form-group">
+        <label>Admin da Eliminare</label>
+        <select name="target_admin_id" required>
+          <option value="">Seleziona admin</option>
+          {% for row in admins %}
+            {% if row.id != current_admin.id and row.role == 'admin' %}
+              <option value="{{ row.id }}">{{ row.username }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      <button class="btn danger" style="margin-top:0.8rem;">Elimina Admin</button>
+    </form>
+  </section>
+
+  <section class="card">
+    <h3>Elenco Admin</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Ruolo</th>
+            <th>Creato</th>
+            <th>Ultimo Login</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for row in admins %}
+          <tr>
+            <td>{{ row.id }}</td>
+            <td>{{ row.username }} {% if row.id == current_admin.id %}<strong>(tu)</strong>{% endif %}</td>
+            <td>{{ row.role }}</td>
+            <td>{{ row.created_at|fmt_dt }}</td>
+            <td>{{ row.last_login_at|fmt_dt }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="hr"></div>
+    <h4 style="margin-top:0;">Elimina il Mio Account</h4>
+    <div class="tag warn">Il superadmin deve prima trasferire il ruolo.</div>
+    <form method="post" data-confirm="Confermi l'eliminazione definitiva del tuo account?">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="action" value="delete_self">
+      <div class="form-group block-gap-small">
+        <label>Password Attuale</label>
+        <input name="current_password" type="password" required>
+      </div>
+      <button class="btn danger" style="margin-top:0.8rem;" disabled>Elimina Account</button>
+    </form>
+
+    <div class="hr"></div>
+    <h4 style="margin-top:0;">Stato Bot</h4>
+    {% if bot_status.enabled %}
+      <div class="tag ok">Bot abilitato</div>
+      <div class="metric-sub">Running: {{ 'SI' if bot_status.running else 'NO' }}</div>
+    {% else %}
+      <div class="tag warn">Bot disabilitato</div>
+    {% endif %}
+    {% if bot_status.last_error %}
+      <div class="metric-sub error-text" style="margin-top:0.5rem;">Ultimo errore: {{ bot_status.last_error }}</div>
+    {% endif %}
+    <div class="hr"></div>
+    <div class="metric-sub">Percorso config: <code>{{ config_path }}</code></div>
+    <div class="metric-sub">Token configurato: {{ 'SI' if bot_token_set else 'NO' }}</div>
+  </section>
+</div>
+{% else %}
+<div class="grid-2 block-gap">
+  <section class="card">
+    <h3>Elimina il Mio Account</h3>
+    <form method="post" data-confirm="Confermi l'eliminazione definitiva del tuo account?">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="action" value="delete_self">
+      <div class="form-group block-gap-small">
+        <label>Password Attuale</label>
+        <input name="current_password" type="password" required>
+      </div>
+      <button class="btn danger" style="margin-top:0.8rem;">Elimina Account</button>
+    </form>
+  </section>
+</div>
+{% endif %}
+{% endblock %}

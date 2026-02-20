@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="section-title">Log Attività</h1>
+
+<div class="action-row" style="margin-bottom:0.8rem;">
+  <a class="btn" href="{{ url_for('logs_export', fmt='csv') }}">Esporta CSV</a>
+  <a class="btn" href="{{ url_for('logs_export', fmt='json') }}">Esporta JSON</a>
+</div>
+
+<div class="card" style="margin-bottom:1rem;">
+  <form method="get">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Livello</label>
+        <select name="level">
+          <option value="">Tutti</option>
+          {% for item in filter_options.levels %}
+            <option value="{{ item }}" {% if filters.level == item %}selected{% endif %}>{{ item }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Sorgente</label>
+        <select name="source">
+          <option value="">Tutte</option>
+          {% for item in filter_options.sources %}
+            <option value="{{ item }}" {% if filters.source == item %}selected{% endif %}>{{ item }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Azione</label>
+        <select name="action">
+          <option value="">Tutte</option>
+          {% for item in filter_options.actions %}
+            <option value="{{ item }}" {% if filters.action == item %}selected{% endif %}>{{ item }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Cerca</label>
+        <input name="q" value="{{ filters.q }}" maxlength="120" placeholder="testo, utente, metadata...">
+      </div>
+      <div class="form-group">
+        <label>Righe tabella</label>
+        <input type="number" name="limit" min="20" max="1000" value="{{ filters.limit }}">
+      </div>
+      <div class="form-group">
+        <label>Righe file live</label>
+        <input type="number" name="raw_lines" min="20" max="1000" value="{{ filters.raw_lines }}">
+      </div>
+    </div>
+    <div class="action-row" style="margin-top:0.8rem;">
+      <button class="btn primary" type="submit">Applica Filtri</button>
+      <a class="btn" href="{{ url_for('logs_page') }}">Reset</a>
+    </div>
+  </form>
+</div>
+
+<div class="card" style="margin-bottom:1rem;">
+  <h3 style="margin-top:0;">Log da File (tempo reale)</h3>
+  <pre class="log-tail">{% for line in file_tail %}{{ line }}{% endfor %}{% if not file_tail %}Nessun dato nel file log.{% endif %}</pre>
+</div>
+
+<div class="card">
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Timestamp</th>
+          <th>Livello</th>
+          <th>Sorgente</th>
+          <th>User ID</th>
+          <th>Username</th>
+          <th>Nome</th>
+          <th>Azione</th>
+          <th>Contenuto</th>
+          <th>Menu Path</th>
+          <th>Metadata</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for row in logs %}
+        <tr>
+          <td>{{ row.id }}</td>
+          <td>{{ row.ts|fmt_dt }}</td>
+          <td>{{ row.level or '-' }}</td>
+          <td>{{ row.source or '-' }}</td>
+          <td>{{ row.user_id or '-' }}</td>
+          <td>{{ row.username or '-' }}</td>
+          <td>{{ row.first_name or '-' }}</td>
+          <td>{{ row.action }}</td>
+          <td>{{ row.content }}</td>
+          <td>{{ row.menu_path or '-' }}</td>
+          <td><code>{{ row.metadata_json }}</code></td>
+        </tr>
+      {% else %}
+        <tr><td colspan="11" class="empty">Nessun log disponibile</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
