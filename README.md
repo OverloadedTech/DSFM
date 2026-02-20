@@ -8,6 +8,27 @@ DSFM is a single-file Python 3 application (`app.py`) that runs in a single proc
 
 Flask runs in the main thread while Telegram polling runs in a dedicated background thread.
 
+---
+
+## Table of Contents
+
+- [Features](#features)
+- [Admin Roles](#admin-roles)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Environment Variables](#environment-variables)
+- [Configuration Reference](#configuration-reference)
+- [System Settings](#system-settings)
+- [Telegram Bot Commands](#telegram-bot-commands)
+- [Admin Panel Pages](#admin-panel-pages)
+- [Project Structure](#project-structure)
+- [Database](#database)
+- [Security Notes](#security-notes)
+- [Troubleshooting](#troubleshooting)
+
+---
+
 ## Features
 
 - **Initial setup** — first admin account is created as `superadmin` via `/setup`
@@ -64,6 +85,97 @@ Then open:
 - `http://<host>:<port>/setup` — first-run admin setup
 - `http://<host>:<port>/login` — admin login
 
+## Environment Variables
+
+Environment variables take precedence over values in `config.toml`.
+
+| Variable | Description |
+|----------|-------------|
+| `DSFM_BOT_TOKEN` | Telegram bot token (from [BotFather](https://t.me/BotFather)) |
+| `DSFM_SECRET_KEY` | Flask session secret key (use a long random string) |
+| `DSFM_CONFIG` | Path to the config file (default: `config.toml`) |
+
+## Configuration Reference
+
+The configuration file uses [TOML](https://toml.io) format. Copy `config.example.toml` to `config.toml` and adjust the values.
+
+### `[app]`
+
+| Key | Default | Description |
+|-----|---------|-------------|
+| `host` | `0.0.0.0` | Address the Flask server binds to |
+| `port` | `8080` | Port the Flask server listens on |
+| `secret_key` | `""` | Session secret key (overridden by `DSFM_SECRET_KEY` env var) |
+| `debug` | `false` | Enable Flask debug mode (do **not** use in production) |
+| `database_path` | `dsfm.sqlite3` | Path to the SQLite database file |
+
+### `[security]`
+
+| Key | Default | Description |
+|-----|---------|-------------|
+| `session_cookie_secure` | `false` | Set to `true` when serving over HTTPS |
+| `session_cookie_samesite` | `Strict` | SameSite cookie policy (`Strict`, `Lax`, or `None`) |
+
+### `[telegram]`
+
+| Key | Default | Description |
+|-----|---------|-------------|
+| `bot_token` | `""` | Telegram bot token (overridden by `DSFM_BOT_TOKEN` env var) |
+| `polling_timeout` | `20` | Long-polling timeout in seconds |
+
+## System Settings
+
+These settings are managed at runtime from the **Settings** page in the admin panel and are stored in the database.
+
+| Setting | Description |
+|---------|-------------|
+| Back button | Show a **Back** button in Telegram menus for navigating to the previous node |
+| Home button | Show a **Home** button in Telegram menus for jumping to the root node |
+| Contact admin | Enable the support-chat feature for users |
+| Chat command | Enable a custom `/chat` command (name is configurable) to open a support chat |
+| Lockdown mode | Block all user interactions and display a maintenance message |
+| Bot display name | The name shown in bot messages |
+
+## Telegram Bot Commands
+
+Users interact with the bot through the following commands and inline buttons.
+
+| Command | Description |
+|---------|-------------|
+| `/start` | Start the bot and show the root menu |
+| `/home` | Navigate back to the root menu |
+| `/cart` | View the shopping cart |
+| `/chat` | Open a support chat with an admin (command name is configurable) |
+| `/close` | Close an open support chat |
+
+### Inline Button Actions
+
+Menu buttons are configured in the admin panel and can perform one of these actions:
+
+| Action | Description |
+|--------|-------------|
+| Open node | Navigate to another menu node |
+| Send text | Send a text message to the user |
+| Send image | Send an image to the user |
+| Start support | Open a support chat |
+| Open order form | Start the multi-step order flow (quantity → color → payment → address → notes) |
+
+## Admin Panel Pages
+
+| Path | Page | Description |
+|------|------|-------------|
+| `/setup` | Setup | First-run page to create the initial `superadmin` account |
+| `/login` | Login | Admin authentication |
+| `/dashboard` | Dashboard | Overview metrics, hourly request chart, top sections, recent logs |
+| `/menu` | Menu Builder | Create and manage the Telegram bot menu tree (nodes, buttons, media). Import/export as JSON |
+| `/chat` | Chats | List and filter support chats (open / closed / all) |
+| `/chat/<id>` | Chat Detail | View message history, reply to users, close/reopen chats, suspend users |
+| `/utenti` | Users | List all Telegram users, search by name/username |
+| `/utenti/sospesi` | Suspended Users | View and manage suspended (banned) users |
+| `/stats` | Statistics | Visual statistics with JSON/CSV export |
+| `/logs` | Logs | Query structured activity logs with filters (level, source, action, text). View raw log file tail |
+| `/impostazioni` | Settings | System settings, admin account management, role management |
+
 ## Project Structure
 
 ```
@@ -74,12 +186,56 @@ templates/              # HTML templates for the admin panel
 static/                 # CSS and JavaScript assets
 logs/                   # Runtime log files (generated)
 uploads/                # Media uploaded from the panel (generated)
+exports/                # Statistics and log exports (generated)
+```
+
+## Database
+
+DSFM uses a single SQLite database (`dsfm.sqlite3` by default) with WAL mode enabled for concurrent reads. The database is created automatically on first run.
+
+### Tables
+
+| Table | Purpose |
+|-------|---------|
+| `admins` | Admin accounts with hashed passwords and roles |
+| `settings` | Key-value system settings |
+| `users` | Telegram users (ID, name, suspension status, last seen) |
+| `menu_nodes` | Hierarchical menu tree nodes (title, message, media) |
+| `menu_buttons` | Buttons attached to menu nodes (label, action type/value) |
+| `chats` | Support chat sessions (status, timestamps) |
+| `chat_messages` | Individual messages within chats |
+| `orders` | Orders submitted through the bot |
+| `user_states` | Per-user navigation and order-flow state (JSON) |
+| `events` | Analytics events (node views, button clicks, commands) |
+| `activity_logs` | Structured audit trail for admin and bot actions |
+
+### Backups
+
+The database file and `logs/` directory should be backed up regularly:
+
+```bash
+cp dsfm.sqlite3 "backups/dsfm-$(date +%F).sqlite3"
+cp -r logs/ "backups/logs-$(date +%F)/"
 ```
 
 ## Security Notes
 
 - **Never commit secrets.** Use environment variables (`DSFM_BOT_TOKEN`, `DSFM_SECRET_KEY`) or a local `config.toml` (gitignored)
 - If a bot token has been exposed publicly, regenerate it immediately via [BotFather](https://t.me/BotFather)
-- Use a strong, stable `DSFM_SECRET_KEY`
+- Use a strong, stable `DSFM_SECRET_KEY` — changing it invalidates all active sessions
 - Enable HTTPS and set `session_cookie_secure = true` in production
+- All admin POST requests are protected by CSRF tokens
+- Passwords are hashed using Werkzeug's password hashing utilities
 - Back up `dsfm.sqlite3` and `logs/` regularly
+- Security headers (CSP, X-Frame-Options, X-Content-Type-Options) are set on all responses
+
+## Troubleshooting
+
+| Problem | Solution |
+|---------|----------|
+| Bot not responding | Verify `DSFM_BOT_TOKEN` is set correctly. Check the console and `logs/bot_activity.log` for errors |
+| `/setup` not available | Setup is only available when no admin accounts exist. Log in at `/login` instead |
+| "CSRF token missing" errors | Make sure cookies are enabled in your browser and `session_cookie_samesite` is compatible with your setup |
+| Sessions lost on restart | Ensure `DSFM_SECRET_KEY` (or `secret_key` in config) stays the same across restarts. If unset, a random key is generated and stored in `.dsfm_secret_key` |
+| Database locked errors | Ensure only one instance of the app is running against the same database file |
+| Port already in use | Change the `port` value in `config.toml` or stop the conflicting process |
