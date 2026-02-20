@@ -13,3 +13,11 @@ session_cookie_samesite = "Strict"
 # Insert your bot token here or set DSFM_BOT_TOKEN environment variable
 bot_token = ""
 polling_timeout = 20
+
+[sync]
+# Strongly recommended: automatic backup to Telegram on significant changes.
+# Set enabled = true and provide a bot token and your Telegram user ID.
+# You can also use DSFM_SYNC_TOKEN and DSFM_SYNC_USERID environment variables.
+enabled = false
+token = ""
+user_id = ""
