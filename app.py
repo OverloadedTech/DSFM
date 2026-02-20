@@ -473,6 +473,9 @@ class SyncManager:
     """Automatic backup & sync to Telegram when significant runtime changes occur."""
 
     TELEGRAM_FILE_LIMIT = 49 * 1024 * 1024  # 49 MB (bot limit is 50 MB)
+    TELEGRAM_CAPTION_LIMIT = 1024
+    MAX_INDIVIDUAL_FILE = 10 * 1024 * 1024  # 10 MB per upload file
+    EXPORTS_DIR = Path("exports")
     COOLDOWN_SECONDS = 300  # minimum gap between uploads
     DEBOUNCE_SECONDS = 30  # wait after last trigger before syncing
 
@@ -539,15 +542,26 @@ class SyncManager:
     def _create_and_send_backup(self, reasons: list[str]) -> None:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         zip_name = f"dsfm_backup_{timestamp}.zip"
-        zip_path = Path("exports") / zip_name
-        Path("exports").mkdir(parents=True, exist_ok=True)
+        self.EXPORTS_DIR.mkdir(parents=True, exist_ok=True)
+        zip_path = self.EXPORTS_DIR / zip_name
         excluded: list[tuple[str, str]] = []
 
+        # Pre-check uploads size to avoid building a zip that will be too large
+        uploads_dir = Path("uploads")
+        uploads_total = sum(
+            f.stat().st_size for f in uploads_dir.rglob("*") if f.is_file()
+        ) if uploads_dir.exists() else 0
+        skip_uploads = uploads_total > self.TELEGRAM_FILE_LIMIT
+        if skip_uploads:
+            excluded.append(
+                ("uploads/*", f"Uploads folder too large ({uploads_total} bytes); excluded")
+            )
+
         try:
-            self._build_zip(zip_path, excluded, skip_uploads=False)
+            self._build_zip(zip_path, excluded, skip_uploads=skip_uploads)
             zip_size = zip_path.stat().st_size
 
-            if zip_size > self.TELEGRAM_FILE_LIMIT:
+            if zip_size > self.TELEGRAM_FILE_LIMIT and not skip_uploads:
                 zip_path.unlink(missing_ok=True)
                 excluded.append(
                     ("uploads/*", f"Backup exceeded Telegram limit ({zip_size} bytes); uploads excluded")
@@ -569,8 +583,8 @@ class SyncManager:
             if len(reasons) > 5:
                 reason_text += f" (+{len(reasons) - 5} more)"
             caption = f"\U0001f504 DSFM Backup\n\U0001f4c5 {timestamp}\n\U0001f4dd {reason_text}"
-            if len(caption) > 1024:
-                caption = caption[:1021] + "..."
+            if len(caption) > self.TELEGRAM_CAPTION_LIMIT:
+                caption = caption[: self.TELEGRAM_CAPTION_LIMIT - 3] + "..."
 
             if excluded:
                 lines = ["\u26a0\ufe0f DSFM Sync \u2014 excluded files:", ""]
@@ -593,15 +607,18 @@ class SyncManager:
             # Database (consistent snapshot via sqlite3 backup API)
             db_file = Path(self.db_path)
             if db_file.exists():
-                tmp_db = Path("exports") / "_sync_tmp.sqlite3"
+                tmp_db = self.EXPORTS_DIR / "_sync_tmp.sqlite3"
+                src = dst = None
                 try:
                     src = sqlite3.connect(str(db_file))
                     dst = sqlite3.connect(str(tmp_db))
                     src.backup(dst)
-                    dst.close()
-                    src.close()
                     zf.write(tmp_db, db_file.name)
                 finally:
+                    if dst:
+                        dst.close()
+                    if src:
+                        src.close()
                     tmp_db.unlink(missing_ok=True)
 
             # Config
@@ -619,8 +636,9 @@ class SyncManager:
             if logs_dir.exists():
                 for f in sorted(logs_dir.rglob("*")):
                     if f.is_file():
-                        if f.stat().st_size > self.TELEGRAM_FILE_LIMIT:
-                            excluded.append((str(f), f"File too large ({f.stat().st_size} bytes)"))
+                        fsize = f.stat().st_size
+                        if fsize > self.TELEGRAM_FILE_LIMIT:
+                            excluded.append((str(f), f"File too large ({fsize} bytes)"))
                             continue
                         zf.write(f, str(f))
 
@@ -630,8 +648,9 @@ class SyncManager:
                 if uploads_dir.exists():
                     for f in sorted(uploads_dir.rglob("*")):
                         if f.is_file():
-                            if f.stat().st_size > 10 * 1024 * 1024:
-                                excluded.append((str(f), f"Individual file too large ({f.stat().st_size} bytes)"))
+                            fsize = f.stat().st_size
+                            if fsize > self.MAX_INDIVIDUAL_FILE:
+                                excluded.append((str(f), f"Individual file too large ({fsize} bytes)"))
                                 continue
                             zf.write(f, str(f))
 
