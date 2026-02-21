@@ -57,7 +57,7 @@
         <label>Testo messaggio</label>
         <textarea name="message_text" placeholder="Messaggio del nodo"></textarea>
       </div>
-      <button class="btn primary block-gap-small" style="width:100%;">Crea Nodo</button>
+      <button class="btn primary btn-block block-gap-small">Crea Nodo</button>
     </form>
 
     <div class="hr"></div>
@@ -67,7 +67,7 @@
     <form method="post" action="{{ url_for('menu_import') }}" enctype="multipart/form-data" class="block-gap-small">
       <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
       <input type="file" name="menu_file" accept="application/json" required>
-      <button class="btn block-gap-small" style="width:100%;">Importa JSON</button>
+      <button class="btn btn-block block-gap-small">Importa JSON</button>
     </form>
   </section>
 
@@ -155,7 +155,7 @@
                     <input style="max-width:70px;" type="number" name="sort_order" min="0" max="50" value="{{ btn.sort_order }}">
                     <button class="btn" type="submit">Aggiorna</button>
                   </form>
-                  <form method="post" action="{{ url_for('menu_delete_button', button_id=btn.id) }}" class="inline-form block-gap-small" data-confirm="Eliminare questo pulsante?" style="display:block;">
+                  <form method="post" action="{{ url_for('menu_delete_button', button_id=btn.id) }}" class="block-gap-small" data-confirm="Eliminare questo pulsante?">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                     <button class="btn danger" type="submit">Elimina</button>
                   </form>

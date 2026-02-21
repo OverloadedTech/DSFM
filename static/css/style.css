@@ -233,6 +233,8 @@ td { font-size: 0.85rem; }
 
 .btn.danger:hover { background: rgba(239,68,68,0.1); }
 
+.btn-block { display: block; width: 100%; }
+
 .inline-form { display: inline; }
 
 /* ── Split / Tree ────────────────────────────────── */
