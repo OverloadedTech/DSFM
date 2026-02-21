@@ -15,7 +15,6 @@ import os
 import secrets
 import socket
 import sqlite3
-import ssl
 import threading
 import time
 import traceback
@@ -4392,9 +4391,19 @@ def _resolve_external_ip() -> str | None:
                 ip = resp.read().decode().strip()
                 if ip:
                     return ip
-        except Exception:
-            continue
+        except Exception as exc:
+            logging.getLogger("dsfm").debug("External IP lookup via %s failed: %s", url, exc)
     return None
+
+
+def _resolve_local_ip() -> str | None:
+    """Determine the LAN IP by briefly opening a UDP socket."""
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            s.connect(("8.8.8.8", 80))
+            return s.getsockname()[0]
+    except Exception:
+        return None
 
 
 def main() -> None:
@@ -4407,7 +4416,7 @@ def main() -> None:
 
     ssl_cert = cfg["app"].get("ssl_cert", "")
     ssl_key = cfg["app"].get("ssl_key", "")
-    ssl_context: ssl.SSLContext | tuple[str, str] | None = None
+    ssl_context: tuple[str, str] | None = None
 
     if ssl_cert and ssl_key:
         cert_path = Path(ssl_cert)
@@ -4431,11 +4440,9 @@ def main() -> None:
     log.info(" * Serving on %s://%s:%s", scheme, host, port)
 
     if host == "0.0.0.0":
-        try:
-            local_ip = socket.gethostbyname(socket.gethostname())
+        local_ip = _resolve_local_ip()
+        if local_ip:
             log.info(" * Local address: %s://%s:%s", scheme, local_ip, port)
-        except Exception:
-            pass
         ext_ip = _resolve_external_ip()
         if ext_ip:
             log.info(" * External address: %s://%s:%s", scheme, ext_ip, port)
