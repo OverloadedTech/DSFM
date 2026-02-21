@@ -4,6 +4,9 @@ port = 8080
 secret_key = ""
 debug = false
 database_path = "dsfm.sqlite3"
+# Optional: paths to SSL certificate and key to enable HTTPS
+ssl_cert = ""
+ssl_key = ""
 
 [security]
 session_cookie_secure = false

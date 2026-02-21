@@ -10,9 +10,12 @@ import atexit
 import csv
 import io
 import json
+import logging
 import os
 import secrets
+import socket
 import sqlite3
+import ssl
 import threading
 import time
 import traceback
@@ -3011,6 +3014,8 @@ def load_config(config_path: str) -> dict[str, Any]:
                     f"secret_key = \"{secret}\"",
                     "debug = false",
                     "database_path = \"dsfm.sqlite3\"",
+                    "ssl_cert = \"\"",
+                    "ssl_key = \"\"",
                     "",
                     "[security]",
                     "session_cookie_secure = false",
@@ -3043,6 +3048,8 @@ def load_config(config_path: str) -> dict[str, Any]:
     data["app"].setdefault("secret_key", secrets.token_hex(32))
     data["app"].setdefault("debug", False)
     data["app"].setdefault("database_path", "dsfm.sqlite3")
+    data["app"].setdefault("ssl_cert", "")
+    data["app"].setdefault("ssl_key", "")
 
     data["security"].setdefault("session_cookie_secure", False)
     data["security"].setdefault("session_cookie_samesite", "Strict")
@@ -4376,6 +4383,20 @@ def create_app(config_path: str | None = None, testing: bool = False, start_bot:
     return app
 
 
+def _resolve_external_ip() -> str | None:
+    """Try to discover the public IP of this machine."""
+    for url in ("https://api.ipify.org", "https://checkip.amazonaws.com"):
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "DSFM"})
+            with urllib.request.urlopen(req, timeout=3) as resp:
+                ip = resp.read().decode().strip()
+                if ip:
+                    return ip
+        except Exception:
+            continue
+    return None
+
+
 def main() -> None:
     config_path = os.environ.get(CONFIG_ENV, DEFAULT_CONFIG_PATH)
     app = create_app(config_path=config_path, testing=False, start_bot=True)
@@ -4383,7 +4404,43 @@ def main() -> None:
     host = cfg["app"].get("host", "0.0.0.0")
     port = int(cfg["app"].get("port", 8080))
     debug = bool(cfg["app"].get("debug", False))
-    app.run(host=host, port=port, debug=debug, use_reloader=False)
+
+    ssl_cert = cfg["app"].get("ssl_cert", "")
+    ssl_key = cfg["app"].get("ssl_key", "")
+    ssl_context: ssl.SSLContext | tuple[str, str] | None = None
+
+    if ssl_cert and ssl_key:
+        cert_path = Path(ssl_cert)
+        key_path = Path(ssl_key)
+        if cert_path.is_file() and key_path.is_file():
+            ssl_context = (str(cert_path), str(key_path))
+        else:
+            logging.getLogger("dsfm").warning(
+                "SSL cert/key configured but files not found: %s / %s",
+                ssl_cert,
+                ssl_key,
+            )
+
+    scheme = "https" if ssl_context else "http"
+    log = logging.getLogger("dsfm")
+    log.setLevel(logging.INFO)
+    if not log.handlers:
+        log.addHandler(logging.StreamHandler())
+
+    log.info(" * DSFM %s", APP_VERSION)
+    log.info(" * Serving on %s://%s:%s", scheme, host, port)
+
+    if host == "0.0.0.0":
+        try:
+            local_ip = socket.gethostbyname(socket.gethostname())
+            log.info(" * Local address: %s://%s:%s", scheme, local_ip, port)
+        except Exception:
+            pass
+        ext_ip = _resolve_external_ip()
+        if ext_ip:
+            log.info(" * External address: %s://%s:%s", scheme, ext_ip, port)
+
+    app.run(host=host, port=port, debug=debug, use_reloader=False, ssl_context=ssl_context)
 
 
 if __name__ == "__main__":
