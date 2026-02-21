@@ -80,6 +80,9 @@ Alternatively, edit `config.toml` directly (not recommended for shared environme
 python app.py
 ```
 
+On startup, DSFM prints the local and external IP addresses so you can
+easily find the correct URL when running on a cloud VM (OCI, Google Cloud, AWS, etc.).
+
 Then open:
 
 - `http://<host>:<port>/setup` — first-run admin setup
@@ -108,6 +111,8 @@ The configuration file uses [TOML](https://toml.io) format. Copy `config.example
 | `secret_key` | `""` | Session secret key (overridden by `DSFM_SECRET_KEY` env var) |
 | `debug` | `false` | Enable Flask debug mode (do **not** use in production) |
 | `database_path` | `dsfm.sqlite3` | Path to the SQLite database file |
+| `ssl_cert` | `""` | Path to an SSL certificate file to enable HTTPS |
+| `ssl_key` | `""` | Path to the corresponding SSL private key file |
 
 ### `[security]`
 
@@ -224,6 +229,7 @@ cp -r logs/ "backups/logs-$(date +%F)/"
 - If a bot token has been exposed publicly, regenerate it immediately via [BotFather](https://t.me/BotFather)
 - Use a strong, stable `DSFM_SECRET_KEY` — changing it invalidates all active sessions
 - Enable HTTPS and set `session_cookie_secure = true` in production
+- For native HTTPS, set `ssl_cert` and `ssl_key` in `config.toml` pointing to your certificate and key files
 - All admin POST requests are protected by CSRF tokens
 - Passwords are hashed using Werkzeug's password hashing utilities
 - Back up `dsfm.sqlite3` and `logs/` regularly
