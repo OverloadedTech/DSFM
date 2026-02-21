@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="section-title">Annunci Globali</h1>
+
+<div class="grid-2">
+  <section class="card">
+    <h3>Nuovo Annuncio</h3>
+    <form method="post" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="action" value="create_announcement">
+
+      <div class="form-group">
+        <label>Testo del messaggio</label>
+        <textarea name="message_text" maxlength="4096" placeholder="Scrivi il testo dell'annuncio..."></textarea>
+      </div>
+
+      <div class="form-group block-gap-small">
+        <label>Immagine (file)</label>
+        <input type="file" name="image_file" accept=".png,.jpg,.jpeg,.gif,.webp">
+      </div>
+
+      <div class="form-group block-gap-small">
+        <label>oppure URL immagine</label>
+        <input name="image_url" maxlength="500" placeholder="https://esempio.com/immagine.jpg">
+      </div>
+
+      <div class="form-group block-gap-small">
+        <label>Pulsanti / Link (JSON)</label>
+        <div class="metric-sub">Formato: [{"label": "Testo", "url": "https://..."}] — max 10 pulsanti</div>
+        <textarea name="buttons_json" maxlength="4000" style="min-height:70px;" placeholder='[{"label": "Visita il sito", "url": "https://esempio.com"}]'>[]</textarea>
+      </div>
+
+      <div id="btn-preview" class="block-gap-small"></div>
+
+      <button class="btn primary" style="margin-top:0.8rem;">Invia Annuncio</button>
+    </form>
+  </section>
+
+  <section class="card">
+    <h3>Informazioni</h3>
+    <div class="metric-sub">
+      Gli annunci vengono inviati a tutti gli utenti attivi e non bloccati.<br><br>
+      Puoi includere:<br>
+      • <strong>Testo</strong> — il messaggio dell'annuncio<br>
+      • <strong>Immagine</strong> — carica un file o inserisci un URL<br>
+      • <strong>Pulsanti</strong> — link cliccabili sotto il messaggio<br><br>
+      La distribuzione avviene in background. Puoi monitorare lo stato nella sezione Storico qui sotto.
+    </div>
+  </section>
+</div>
+
+<div class="block-gap">
+  <h2 class="section-title" style="font-size:1.4rem;">Storico Annunci</h2>
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Admin</th>
+            <th>Testo</th>
+            <th>Immagine</th>
+            <th>Stato</th>
+            <th>Totale</th>
+            <th>Inviati</th>
+            <th>Falliti</th>
+            <th>In attesa</th>
+            <th>Creato</th>
+            <th>Completato</th>
+            <th>Azioni</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for ann in announcements %}
+          <tr data-ann-id="{{ ann.id }}" {% if ann.status == 'sending' %}class="ann-sending"{% endif %}>
+            <td>{{ ann.id }}</td>
+            <td>{{ ann.admin_username or '-' }}</td>
+            <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ ann.message_text[:80] if ann.message_text else '-' }}</td>
+            <td>{% if ann.media_type == 'photo' %}<span class="tag ok">Sì</span>{% else %}-{% endif %}</td>
+            <td>
+              <span class="ann-status tag {% if ann.status == 'completed' %}ok{% elif ann.status == 'sending' %}warn{% elif ann.status == 'stopped' %}err{% else %}warn{% endif %}">
+                {% if ann.status == 'completed' %}Completato{% elif ann.status == 'sending' %}In corso{% elif ann.status == 'stopped' %}Fermato{% else %}{{ ann.status }}{% endif %}
+              </span>
+            </td>
+            <td class="ann-total">{{ ann.total_users }}</td>
+            <td class="ann-sent">{{ ann.sent_count }}</td>
+            <td class="ann-failed">{{ ann.failed_count }}</td>
+            <td class="ann-pending">{{ [0, ann.total_users - ann.sent_count - ann.failed_count]|max }}</td>
+            <td>{{ ann.created_at|fmt_dt }}</td>
+            <td class="ann-completed-at">{{ ann.completed_at|fmt_dt }}</td>
+            <td>
+              {% if ann.status == 'sending' %}
+              <form method="post" class="inline-form" data-confirm="Sei sicuro di voler fermare questo annuncio?">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <input type="hidden" name="action" value="stop_announcement">
+                <input type="hidden" name="announcement_id" value="{{ ann.id }}">
+                <button class="btn danger" type="submit">Ferma</button>
+              </form>
+              {% else %}
+              -
+              {% endif %}
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="12" class="empty">Nessun annuncio inviato</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/announcements.js') }}"></script>
+{% endblock %}
