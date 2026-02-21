@@ -16,6 +16,7 @@ import sqlite3
 import threading
 import time
 import traceback
+import urllib.parse
 import urllib.request
 import zipfile
 from collections import deque
@@ -3381,6 +3382,15 @@ def create_app(config_path: str | None = None, testing: bool = False, start_bot:
             client_ip = sanitize_text(request.remote_addr or "unknown", 64)
             now = time.time()
             with _login_lock:
+                # Periodically clean up expired entries to prevent memory growth
+                if len(_login_attempts) > 100:
+                    expired_ips = [
+                        ip for ip, ts_list in _login_attempts.items()
+                        if all(now - t >= LOGIN_WINDOW_SECONDS for t in ts_list)
+                    ]
+                    for ip in expired_ips:
+                        del _login_attempts[ip]
+
                 attempts = _login_attempts.get(client_ip, [])
                 attempts = [t for t in attempts if now - t < LOGIN_WINDOW_SECONDS]
                 if len(attempts) >= LOGIN_MAX_ATTEMPTS:
@@ -4287,8 +4297,10 @@ def create_app(config_path: str | None = None, testing: bool = False, start_bot:
                         if isinstance(b, dict):
                             label = sanitize_text(b.get("label", ""), 64)
                             url = sanitize_text(b.get("url", ""), 500)
-                            if label and url and (url.startswith("http://") or url.startswith("https://")):
-                                clean_btns.append({"label": label, "url": url})
+                            if label and url:
+                                parsed = urllib.parse.urlparse(url)
+                                if parsed.scheme in ("http", "https") and parsed.netloc:
+                                    clean_btns.append({"label": label, "url": url})
                     buttons_json = json.dumps(clean_btns, ensure_ascii=False)
                 except Exception:
                     buttons_json = "[]"

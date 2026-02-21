@@ -85,7 +85,7 @@
             <td class="ann-total">{{ ann.total_users }}</td>
             <td class="ann-sent">{{ ann.sent_count }}</td>
             <td class="ann-failed">{{ ann.failed_count }}</td>
-            <td class="ann-pending">{{ ann.total_users - ann.sent_count - ann.failed_count }}</td>
+            <td class="ann-pending">{{ [0, ann.total_users - ann.sent_count - ann.failed_count]|max }}</td>
             <td>{{ ann.created_at|fmt_dt }}</td>
             <td class="ann-completed-at">{{ ann.completed_at|fmt_dt }}</td>
             <td>
@@ -114,57 +114,5 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
-(function() {
-  var rows = document.querySelectorAll('tr.ann-sending');
-  if (!rows.length) return;
-
-  var csrfToken = document.querySelector('meta[name="csrf-token"]');
-  var token = '{{ csrf_token }}';
-
-  function pollStatus() {
-    rows.forEach(function(row) {
-      var annId = row.getAttribute('data-ann-id');
-      if (!annId) return;
-
-      fetch('/api/announcement-status/' + annId, {
-        headers: {'X-CSRF-Token': token}
-      })
-      .then(function(r) { return r.json(); })
-      .then(function(data) {
-        var sentEl = row.querySelector('.ann-sent');
-        var failedEl = row.querySelector('.ann-failed');
-        var pendingEl = row.querySelector('.ann-pending');
-        var statusEl = row.querySelector('.ann-status');
-        var completedEl = row.querySelector('.ann-completed-at');
-
-        if (sentEl) sentEl.textContent = data.sent_count;
-        if (failedEl) failedEl.textContent = data.failed_count;
-        if (pendingEl) pendingEl.textContent = data.total_users - data.sent_count - data.failed_count;
-
-        if (data.status !== 'sending') {
-          row.classList.remove('ann-sending');
-          if (statusEl) {
-            statusEl.className = 'ann-status tag ' + (data.status === 'completed' ? 'ok' : 'err');
-            statusEl.textContent = data.status === 'completed' ? 'Completato' : 'Fermato';
-          }
-          if (completedEl && data.completed_at) {
-            completedEl.textContent = data.completed_at;
-          }
-          var actionTd = row.querySelector('td:last-child');
-          if (actionTd) actionTd.textContent = '-';
-        }
-      })
-      .catch(function() {});
-    });
-
-    rows = document.querySelectorAll('tr.ann-sending');
-    if (rows.length > 0) {
-      setTimeout(pollStatus, 3000);
-    }
-  }
-
-  setTimeout(pollStatus, 2000);
-})();
-</script>
+<script src="{{ url_for('static', filename='js/announcements.js') }}"></script>
 {% endblock %}
