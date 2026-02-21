@@ -27,6 +27,7 @@
     <a class="{% if request.endpoint == 'menu_builder' %}active{% endif %}" href="{{ url_for('menu_builder') }}">Costruttore Bot</a>
     <a class="{% if request.endpoint == 'stats' %}active{% endif %}" href="{{ url_for('stats') }}">Statistiche</a>
     <a class="{% if request.endpoint == 'logs_page' %}active{% endif %}" href="{{ url_for('logs_page') }}">Logs</a>
+    <a class="{% if request.endpoint == 'announcements_page' %}active{% endif %}" href="{{ url_for('announcements_page') }}">Annunci</a>
     {% endif %}
     <a class="{% if request.endpoint == 'settings_page' %}active{% endif %}" href="{{ url_for('settings_page') }}">Impostazioni</a>
   </nav>

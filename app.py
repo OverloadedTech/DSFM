@@ -175,6 +175,13 @@ def get_or_create_stable_secret(config_path: Path) -> str:
 def validate_admin_password(password: str, username: str = "") -> str | None:
     if len(password) < MIN_ADMIN_PASSWORD_LEN:
         return f"La password deve avere almeno {MIN_ADMIN_PASSWORD_LEN} caratteri"
+    if username and password.lower() == username.lower():
+        return "La password non può essere uguale al nome utente"
+    has_upper = any(c.isupper() for c in password)
+    has_lower = any(c.islower() for c in password)
+    has_digit = any(c.isdigit() for c in password)
+    if not (has_upper and has_lower and has_digit):
+        return "La password deve contenere almeno una lettera maiuscola, una minuscola e un numero"
     return None
 
 
@@ -376,6 +383,24 @@ class Database:
         );
 
         CREATE INDEX IF NOT EXISTS idx_activity_logs_ts ON activity_logs(ts);
+
+        CREATE TABLE IF NOT EXISTS announcements (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            admin_id INTEGER NOT NULL,
+            message_text TEXT NOT NULL DEFAULT '',
+            media_type TEXT NOT NULL DEFAULT '',
+            media_path TEXT NOT NULL DEFAULT '',
+            buttons_json TEXT NOT NULL DEFAULT '[]',
+            status TEXT NOT NULL DEFAULT 'pending',
+            total_users INTEGER NOT NULL DEFAULT 0,
+            sent_count INTEGER NOT NULL DEFAULT 0,
+            failed_count INTEGER NOT NULL DEFAULT 0,
+            created_at TEXT NOT NULL,
+            updated_at TEXT NOT NULL,
+            completed_at TEXT
+        );
+
+        CREATE INDEX IF NOT EXISTS idx_announcements_status ON announcements(status);
 
         """
 
@@ -1617,6 +1642,73 @@ class DSFMService:
         )
         return summary
 
+    # ---------- Announcements ----------
+    def create_announcement(
+        self,
+        *,
+        admin_id: int,
+        message_text: str,
+        media_type: str = "",
+        media_path: str = "",
+        buttons_json: str = "[]",
+    ) -> int:
+        ts = now_str()
+        total = self.db.fetchone(
+            "SELECT COUNT(*) AS c FROM users WHERE is_suspended = 0 AND blocked_bot = 0"
+        )
+        total_users = to_int(total["c"], 0, 0) if total else 0
+        return self.db.execute(
+            """
+            INSERT INTO announcements(admin_id, message_text, media_type, media_path, buttons_json,
+                                      status, total_users, sent_count, failed_count, created_at, updated_at)
+            VALUES(?, ?, ?, ?, ?, 'sending', ?, 0, 0, ?, ?)
+            """,
+            (
+                admin_id,
+                sanitize_text(message_text, 4096),
+                sanitize_text(media_type, 20),
+                sanitize_text(media_path, 500),
+                sanitize_text(buttons_json, 4000),
+                total_users,
+                ts,
+                ts,
+            ),
+        )
+
+    def get_announcement(self, announcement_id: int) -> sqlite3.Row | None:
+        return self.db.fetchone("SELECT * FROM announcements WHERE id = ?", (announcement_id,))
+
+    def list_announcements(self, limit: int = 50) -> list[sqlite3.Row]:
+        return self.db.fetchall(
+            "SELECT a.*, adm.username AS admin_username FROM announcements a "
+            "LEFT JOIN admins adm ON adm.id = a.admin_id "
+            "ORDER BY a.id DESC LIMIT ?",
+            (to_int(limit, 50, 1, 200),),
+        )
+
+    def stop_announcement(self, announcement_id: int) -> None:
+        self.db.execute(
+            "UPDATE announcements SET status = 'stopped', updated_at = ?, completed_at = ? WHERE id = ? AND status = 'sending'",
+            (now_str(), now_str(), announcement_id),
+        )
+
+    def update_announcement_progress(self, announcement_id: int, sent: int, failed: int) -> None:
+        self.db.execute(
+            "UPDATE announcements SET sent_count = ?, failed_count = ?, updated_at = ? WHERE id = ?",
+            (sent, failed, now_str(), announcement_id),
+        )
+
+    def complete_announcement(self, announcement_id: int, sent: int, failed: int) -> None:
+        self.db.execute(
+            "UPDATE announcements SET status = 'completed', sent_count = ?, failed_count = ?, "
+            "updated_at = ?, completed_at = ? WHERE id = ?",
+            (sent, failed, now_str(), now_str(), announcement_id),
+        )
+
+    def get_active_announcement_ids(self) -> list[int]:
+        rows = self.db.fetchall("SELECT id FROM announcements WHERE status = 'sending'")
+        return [row["id"] for row in rows]
+
     # ---------- Analytics ----------
     def record_event(
         self,
@@ -1970,6 +2062,98 @@ class DSFMBot:
                 metadata={"type": "photo", "path": media},
             )
             return False
+
+    def send_announcement_async(self, announcement_id: int) -> None:
+        t = threading.Thread(
+            target=self._send_announcement_worker,
+            args=(announcement_id,),
+            daemon=True,
+            name=f"dsfm-announce-{announcement_id}",
+        )
+        t.start()
+
+    def _send_announcement_worker(self, announcement_id: int) -> None:
+        service = self.service
+        ann = service.get_announcement(announcement_id)
+        if not ann or ann["status"] != "sending":
+            return
+
+        message_text = ann["message_text"]
+        media_type = ann["media_type"]
+        media_path = ann["media_path"]
+        buttons_json_raw = ann["buttons_json"]
+
+        try:
+            buttons = json.loads(buttons_json_raw) if buttons_json_raw else []
+            if not isinstance(buttons, list):
+                buttons = []
+        except Exception:
+            buttons = []
+
+        markup = None
+        if buttons and InlineKeyboardMarkup and InlineKeyboardButton:
+            markup = InlineKeyboardMarkup()
+            for btn in buttons:
+                label = sanitize_text(btn.get("label", ""), 64)
+                url = sanitize_text(btn.get("url", ""), 500)
+                if label and url:
+                    markup.add(InlineKeyboardButton(text=label, url=url))
+
+        users = service.db.fetchall(
+            "SELECT telegram_id FROM users WHERE is_suspended = 0 AND blocked_bot = 0"
+        )
+
+        sent = 0
+        failed = 0
+        batch_size = 25
+
+        for i, user_row in enumerate(users):
+            ann_check = service.get_announcement(announcement_id)
+            if not ann_check or ann_check["status"] != "sending":
+                break
+
+            user_id = user_row["telegram_id"]
+            try:
+                if media_type == "photo" and media_path and self.bot:
+                    if media_path.startswith("http://") or media_path.startswith("https://"):
+                        self.bot.send_photo(
+                            user_id, media_path,
+                            caption=sanitize_text(message_text, 1000) if message_text else None,
+                            reply_markup=markup,
+                        )
+                    else:
+                        file_path = Path(media_path)
+                        if file_path.exists():
+                            with open(file_path, "rb") as fp:
+                                self.bot.send_photo(
+                                    user_id, fp,
+                                    caption=sanitize_text(message_text, 1000) if message_text else None,
+                                    reply_markup=markup,
+                                )
+                        else:
+                            if message_text:
+                                self.bot.send_message(user_id, message_text, reply_markup=markup)
+                elif message_text and self.bot:
+                    chunks = split_long_text(message_text)
+                    for ci, chunk in enumerate(chunks):
+                        m = markup if ci == len(chunks) - 1 else None
+                        self.bot.send_message(user_id, chunk, reply_markup=m)
+                sent += 1
+            except Exception as exc:
+                err_text = str(exc)
+                if "bot was blocked" in err_text.lower() or "user is deactivated" in err_text.lower():
+                    service.mark_user_blocked_bot(user_id, True)
+                failed += 1
+
+            if (i + 1) % batch_size == 0:
+                service.update_announcement_progress(announcement_id, sent, failed)
+                time.sleep(1)
+
+        ann_final = service.get_announcement(announcement_id)
+        if ann_final and ann_final["status"] == "sending":
+            service.complete_announcement(announcement_id, sent, failed)
+        else:
+            service.update_announcement_progress(announcement_id, sent, failed)
 
     def _is_lockdown(self) -> bool:
         return self.service.get_setting_bool("lockdown_mode", False)
@@ -3040,6 +3224,8 @@ def create_app(config_path: str | None = None, testing: bool = False, start_bot:
         "logout",
         "api_dashboard_data",
         "api_chat_messages",
+        "announcements_page",
+        "api_announcement_status",
     }
 
     admin_allowed_endpoints = {
@@ -3180,6 +3366,11 @@ def create_app(config_path: str | None = None, testing: bool = False, start_bot:
 
         return render_template("setup.html")
 
+    _login_attempts: dict[str, list[float]] = {}
+    _login_lock = threading.Lock()
+    LOGIN_MAX_ATTEMPTS = 5
+    LOGIN_WINDOW_SECONDS = 300
+
     @app.route("/login", methods=["GET", "POST"])
     def login() -> Any:
         service_obj = current_service()
@@ -3187,12 +3378,50 @@ def create_app(config_path: str | None = None, testing: bool = False, start_bot:
             return redirect(url_for("setup"))
 
         if request.method == "POST":
+            client_ip = sanitize_text(request.remote_addr or "unknown", 64)
+            now = time.time()
+            with _login_lock:
+                attempts = _login_attempts.get(client_ip, [])
+                attempts = [t for t in attempts if now - t < LOGIN_WINDOW_SECONDS]
+                if len(attempts) >= LOGIN_MAX_ATTEMPTS:
+                    _login_attempts[client_ip] = attempts
+                    service_obj.log_activity(
+                        user_id="-",
+                        username=sanitize_text(request.form.get("username", ""), 64),
+                        first_name="-",
+                        action="login_rate_limited",
+                        content=f"Troppi tentativi di login da {client_ip}",
+                        level="SECURITY",
+                        source="admin_panel",
+                        metadata={"remote_addr": client_ip},
+                    )
+                    flash("Troppi tentativi di accesso. Riprova tra qualche minuto.", "error")
+                    return render_template("login.html")
+
             username = request.form.get("username", "")
             password = request.form.get("password", "")
             admin = service_obj.verify_admin(username, password)
             if not admin:
+                with _login_lock:
+                    attempts = _login_attempts.get(client_ip, [])
+                    attempts = [t for t in attempts if now - t < LOGIN_WINDOW_SECONDS]
+                    attempts.append(now)
+                    _login_attempts[client_ip] = attempts
+                service_obj.log_activity(
+                    user_id="-",
+                    username=sanitize_text(username, 64),
+                    first_name="-",
+                    action="login_failed",
+                    content=f"Tentativo di login fallito da {client_ip}",
+                    level="SECURITY",
+                    source="admin_panel",
+                    metadata={"remote_addr": client_ip},
+                )
                 flash("Credenziali non valide", "error")
                 return render_template("login.html")
+
+            with _login_lock:
+                _login_attempts.pop(client_ip, None)
 
             session.clear()
             session["csrf_token"] = secrets.token_urlsafe(24)
@@ -4012,6 +4241,125 @@ def create_app(config_path: str | None = None, testing: bool = False, start_bot:
             current_admin=current_admin,
             is_superadmin=is_superadmin,
         )
+
+    # ---------- Announcements ----------
+    @app.route("/annunci", methods=["GET", "POST"])
+    def announcements_page() -> Any:
+        service_obj = current_service()
+        current_admin_id = to_int(session.get("admin_id", 0), 0)
+
+        if request.method == "POST":
+            action = sanitize_text(request.form.get("action", ""), 40)
+
+            if action == "create_announcement":
+                message_text = sanitize_text(request.form.get("message_text", ""), 4096)
+                media_type = ""
+                media_path = ""
+
+                image_file = request.files.get("image_file")
+                image_url = sanitize_text(request.form.get("image_url", ""), 500)
+
+                if image_file and image_file.filename:
+                    fname = secure_filename(image_file.filename)
+                    ext = fname.rsplit(".", 1)[-1].lower() if "." in fname else ""
+                    if ext in ALLOWED_IMAGE_EXTENSIONS:
+                        save_dir = Path("uploads") / "announcements"
+                        save_dir.mkdir(parents=True, exist_ok=True)
+                        safe_name = f"ann_{secrets.token_urlsafe(8)}.{ext}"
+                        dest = save_dir / safe_name
+                        image_file.save(str(dest))
+                        media_type = "photo"
+                        media_path = str(dest)
+                    else:
+                        flash("Formato immagine non supportato. Usa: png, jpg, jpeg, gif, webp", "error")
+                        return redirect(url_for("announcements_page"))
+                elif image_url:
+                    media_type = "photo"
+                    media_path = image_url
+
+                buttons_raw = sanitize_text(request.form.get("buttons_json", "[]"), 4000)
+                try:
+                    btns = json.loads(buttons_raw)
+                    if not isinstance(btns, list):
+                        btns = []
+                    clean_btns = []
+                    for b in btns[:10]:
+                        if isinstance(b, dict):
+                            label = sanitize_text(b.get("label", ""), 64)
+                            url = sanitize_text(b.get("url", ""), 500)
+                            if label and url and (url.startswith("http://") or url.startswith("https://")):
+                                clean_btns.append({"label": label, "url": url})
+                    buttons_json = json.dumps(clean_btns, ensure_ascii=False)
+                except Exception:
+                    buttons_json = "[]"
+
+                if not message_text and not media_path:
+                    flash("Inserisci un testo o un'immagine per l'annuncio", "error")
+                    return redirect(url_for("announcements_page"))
+
+                active = service_obj.get_active_announcement_ids()
+                if active:
+                    flash("C'è già un annuncio in corso. Attendere il completamento o fermarlo.", "error")
+                    return redirect(url_for("announcements_page"))
+
+                ann_id = service_obj.create_announcement(
+                    admin_id=current_admin_id,
+                    message_text=message_text,
+                    media_type=media_type,
+                    media_path=media_path,
+                    buttons_json=buttons_json,
+                )
+
+                service_obj.log_activity(
+                    user_id=current_admin_id,
+                    username=session.get("admin_username", ""),
+                    first_name="-",
+                    action="announcement_created",
+                    content=f"Annuncio #{ann_id} creato",
+                    level="AUDIT",
+                    source="admin_panel",
+                    metadata={"announcement_id": ann_id},
+                )
+
+                current_bot().send_announcement_async(ann_id)
+                flash(f"Annuncio #{ann_id} avviato. La distribuzione è in corso.", "success")
+                return redirect(url_for("announcements_page"))
+
+            if action == "stop_announcement":
+                ann_id = to_int(request.form.get("announcement_id", 0), 0)
+                if ann_id > 0:
+                    service_obj.stop_announcement(ann_id)
+                    service_obj.log_activity(
+                        user_id=current_admin_id,
+                        username=session.get("admin_username", ""),
+                        first_name="-",
+                        action="announcement_stopped",
+                        content=f"Annuncio #{ann_id} fermato manualmente",
+                        level="AUDIT",
+                        source="admin_panel",
+                        metadata={"announcement_id": ann_id},
+                    )
+                    flash(f"Annuncio #{ann_id} fermato.", "success")
+                return redirect(url_for("announcements_page"))
+
+        announcements = service_obj.list_announcements()
+        return render_template("announcements.html", announcements=announcements)
+
+    @app.route("/api/announcement-status/<int:ann_id>")
+    def api_announcement_status(ann_id: int) -> Any:
+        service_obj = current_service()
+        ann = service_obj.get_announcement(ann_id)
+        if not ann:
+            abort(404)
+        return jsonify({
+            "id": ann["id"],
+            "status": ann["status"],
+            "total_users": ann["total_users"],
+            "sent_count": ann["sent_count"],
+            "failed_count": ann["failed_count"],
+            "updated_at": ann["updated_at"],
+            "completed_at": ann["completed_at"],
+        })
 
     return app
 
