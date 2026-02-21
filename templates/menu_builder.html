@@ -36,11 +36,11 @@
         <label>Titolo</label>
         <input name="title" required maxlength="120" placeholder="Nuovo nodo">
       </div>
-      <div class="form-group" style="margin-top:0.5rem;">
+      <div class="form-group block-gap-small">
         <label>Nome interno</label>
         <input name="internal_name" maxlength="120" placeholder="nuovo_nodo">
       </div>
-      <div class="form-group" style="margin-top:0.5rem;">
+      <div class="form-group block-gap-small">
         <label>Nodo padre</label>
         <select name="parent_id">
           <option value="">(Radice)</option>
@@ -49,25 +49,25 @@
           {% endfor %}
         </select>
       </div>
-      <div class="form-group" style="margin-top:0.5rem;">
+      <div class="form-group block-gap-small">
         <label>Ordine</label>
         <input name="sort_order" type="number" min="0" max="9999" value="0">
       </div>
-      <div class="form-group" style="margin-top:0.5rem;">
+      <div class="form-group block-gap-small">
         <label>Testo messaggio</label>
         <textarea name="message_text" placeholder="Messaggio del nodo"></textarea>
       </div>
-      <button class="btn primary" style="margin-top:0.65rem; width:100%;">Crea Nodo</button>
+      <button class="btn primary block-gap-small" style="width:100%;">Crea Nodo</button>
     </form>
 
     <div class="hr"></div>
     <div class="action-row">
       <a class="btn" href="{{ url_for('menu_export') }}">Esporta JSON</a>
     </div>
-    <form method="post" action="{{ url_for('menu_import') }}" enctype="multipart/form-data" style="margin-top:0.6rem;">
+    <form method="post" action="{{ url_for('menu_import') }}" enctype="multipart/form-data" class="block-gap-small">
       <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
       <input type="file" name="menu_file" accept="application/json" required>
-      <button class="btn" style="margin-top:0.5rem; width:100%;">Importa JSON</button>
+      <button class="btn block-gap-small" style="width:100%;">Importa JSON</button>
     </form>
   </section>
 
@@ -113,12 +113,12 @@
           </div>
         </div>
 
-        <div class="action-row" style="margin-top:0.8rem;">
+        <div class="action-row block-gap-small">
           <button class="btn primary" type="submit">Salva Nodo</button>
         </div>
       </form>
 
-      <form method="post" action="{{ url_for('menu_delete_node', node_id=selected_node.id) }}" data-confirm="Eliminare questo nodo e tutti i sotto-nodi?" style="margin-top:0.8rem;">
+      <form method="post" action="{{ url_for('menu_delete_node', node_id=selected_node.id) }}" data-confirm="Eliminare questo nodo e tutti i sotto-nodi?" class="block-gap-small">
         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
         <button class="btn danger" type="submit">Elimina Nodo</button>
       </form>
@@ -155,7 +155,7 @@
                     <input style="max-width:70px;" type="number" name="sort_order" min="0" max="50" value="{{ btn.sort_order }}">
                     <button class="btn" type="submit">Aggiorna</button>
                   </form>
-                  <form method="post" action="{{ url_for('menu_delete_button', button_id=btn.id) }}" class="inline-form" data-confirm="Eliminare questo pulsante?" style="margin-top:0.4rem; display:block;">
+                  <form method="post" action="{{ url_for('menu_delete_button', button_id=btn.id) }}" class="inline-form block-gap-small" data-confirm="Eliminare questo pulsante?" style="display:block;">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                     <button class="btn danger" type="submit">Elimina</button>
                   </form>
@@ -174,7 +174,7 @@
         {% endfor %}
       </datalist>
 
-      <h4 style="margin-top:1rem;">Aggiungi Pulsante</h4>
+      <h4 class="block-gap">Aggiungi Pulsante</h4>
       <form method="post" action="{{ url_for('menu_add_button', node_id=selected_node.id) }}">
         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
         <div class="form-grid">
@@ -203,7 +203,7 @@
             <input type="number" name="sort_order" min="0" max="50" value="0">
           </div>
         </div>
-        <button class="btn primary" style="margin-top:0.8rem;">Aggiungi Pulsante</button>
+        <button class="btn primary block-gap-small">Aggiungi Pulsante</button>
       </form>
     {% else %}
       <div class="empty">Seleziona o crea un nodo dal menu a sinistra.</div>

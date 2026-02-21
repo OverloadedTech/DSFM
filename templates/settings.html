@@ -55,7 +55,7 @@
         <textarea name="lockdown_message" maxlength="2000">{{ settings.lockdown_message }}</textarea>
       </div>
 
-      <button class="btn primary" style="margin-top:0.8rem;">Salva Modifiche</button>
+      <button class="btn primary block-gap-small">Salva Modifiche</button>
     </form>
   </section>
   {% else %}
@@ -73,7 +73,7 @@
     <div class="metric-sub">Utente corrente: <strong>{{ current_admin.username }}</strong> ({{ current_admin.role }})</div>
 
     <div class="hr"></div>
-    <h4 style="margin-top:0;">Cambia Username</h4>
+    <h4>Cambia Username</h4>
     <form method="post">
       <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
       <input type="hidden" name="action" value="change_username">
@@ -85,11 +85,11 @@
         <label>Password Attuale</label>
         <input name="current_password" type="password" required>
       </div>
-      <button class="btn" style="margin-top:0.8rem;">Aggiorna Username</button>
+      <button class="btn block-gap-small">Aggiorna Username</button>
     </form>
 
     <div class="hr"></div>
-    <h4 style="margin-top:0;">Cambia Password</h4>
+    <h4>Cambia Password</h4>
     <form method="post">
       <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
       <input type="hidden" name="action" value="change_password">
@@ -109,7 +109,7 @@
         <input name="confirm_password" type="password" minlength="8" required>
       </div>
 
-      <button class="btn" style="margin-top:0.8rem;">Aggiorna Password</button>
+      <button class="btn block-gap-small">Aggiorna Password</button>
     </form>
   </section>
 </div>
@@ -121,7 +121,7 @@
     <div class="metric-sub">Solo il superadmin può creare admin, trasferire il ruolo, resettare password e rimuovere account admin.</div>
 
     <div class="hr"></div>
-    <h4 style="margin-top:0;">Crea Nuovo Admin</h4>
+    <h4>Crea Nuovo Admin</h4>
     <form method="post">
       <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
       <input type="hidden" name="action" value="create_admin">
@@ -137,11 +137,11 @@
         <label>Conferma Password</label>
         <input name="new_admin_password_confirm" type="password" minlength="8" required>
       </div>
-      <button class="btn primary" style="margin-top:0.8rem;">Crea Admin</button>
+      <button class="btn primary block-gap-small">Crea Admin</button>
     </form>
 
     <div class="hr"></div>
-    <h4 style="margin-top:0;">Trasferisci Superadmin</h4>
+    <h4>Trasferisci Superadmin</h4>
     <form method="post" data-confirm="Confermi il trasferimento del ruolo superadmin?">
       <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
       <input type="hidden" name="action" value="transfer_superadmin">
@@ -160,11 +160,11 @@
         <label>Password Attuale (conferma)</label>
         <input name="current_password" type="password" required>
       </div>
-      <button class="btn danger" style="margin-top:0.8rem;">Trasferisci Ruolo</button>
+      <button class="btn danger block-gap-small">Trasferisci Ruolo</button>
     </form>
 
     <div class="hr"></div>
-    <h4 style="margin-top:0;">Reset Password Admin</h4>
+    <h4>Reset Password Admin</h4>
     <form method="post" data-confirm="Confermi il reset password per l'admin selezionato?">
       <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
       <input type="hidden" name="action" value="reset_admin_password">
@@ -187,11 +187,11 @@
         <label>Conferma Nuova Password</label>
         <input name="new_password_confirm" type="password" minlength="8" required>
       </div>
-      <button class="btn" style="margin-top:0.8rem;">Reset Password</button>
+      <button class="btn block-gap-small">Reset Password</button>
     </form>
 
     <div class="hr"></div>
-    <h4 style="margin-top:0;">Elimina Account Admin</h4>
+    <h4>Elimina Account Admin</h4>
     <form method="post" data-confirm="Confermi l'eliminazione definitiva dell'admin selezionato?">
       <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
       <input type="hidden" name="action" value="delete_admin_account">
@@ -206,7 +206,7 @@
           {% endfor %}
         </select>
       </div>
-      <button class="btn danger" style="margin-top:0.8rem;">Elimina Admin</button>
+      <button class="btn danger block-gap-small">Elimina Admin</button>
     </form>
   </section>
 
@@ -238,7 +238,7 @@
     </div>
 
     <div class="hr"></div>
-    <h4 style="margin-top:0;">Elimina il Mio Account</h4>
+    <h4>Elimina il Mio Account</h4>
     <div class="tag warn">Il superadmin deve prima trasferire il ruolo.</div>
     <form method="post" data-confirm="Confermi l'eliminazione definitiva del tuo account?">
       <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
@@ -247,11 +247,11 @@
         <label>Password Attuale</label>
         <input name="current_password" type="password" required>
       </div>
-      <button class="btn danger" style="margin-top:0.8rem;" disabled>Elimina Account</button>
+      <button class="btn danger block-gap-small" disabled>Elimina Account</button>
     </form>
 
     <div class="hr"></div>
-    <h4 style="margin-top:0;">Stato Bot</h4>
+    <h4>Stato Bot</h4>
     {% if bot_status.enabled %}
       <div class="tag ok">Bot abilitato</div>
       <div class="metric-sub">Running: {{ 'SI' if bot_status.running else 'NO' }}</div>
@@ -259,7 +259,7 @@
       <div class="tag warn">Bot disabilitato</div>
     {% endif %}
     {% if bot_status.last_error %}
-      <div class="metric-sub error-text" style="margin-top:0.5rem;">Ultimo errore: {{ bot_status.last_error }}</div>
+      <div class="metric-sub error-text block-gap-small">Ultimo errore: {{ bot_status.last_error }}</div>
     {% endif %}
     <div class="hr"></div>
     <div class="metric-sub">Percorso config: <code>{{ config_path }}</code></div>
@@ -277,7 +277,7 @@
         <label>Password Attuale</label>
         <input name="current_password" type="password" required>
       </div>
-      <button class="btn danger" style="margin-top:0.8rem;">Elimina Account</button>
+      <button class="btn danger block-gap-small">Elimina Account</button>
     </form>
   </section>
 </div>
