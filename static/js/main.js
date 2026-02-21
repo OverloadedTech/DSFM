@@ -194,10 +194,10 @@
           legend: { labels: { color: "#d4d4d8" } },
         },
         scales: {
-          x: { ticks: { color: "#71717a" }, grid: { color: "rgba(255,255,255,0.05)" } },
+          x: { ticks: { color: "#63636b" }, grid: { color: "rgba(255,255,255,0.04)" } },
           y: {
-            ticks: { color: "#71717a" },
-            grid: { color: "rgba(255,255,255,0.05)" },
+            ticks: { color: "#63636b" },
+            grid: { color: "rgba(255,255,255,0.04)" },
             beginAtZero: true,
           },
         },
@@ -231,10 +231,10 @@
           legend: { labels: { color: "#d4d4d8" } },
         },
         scales: {
-          x: { ticks: { color: "#71717a" }, grid: { color: "rgba(255,255,255,0.05)" } },
+          x: { ticks: { color: "#63636b" }, grid: { color: "rgba(255,255,255,0.04)" } },
           y: {
-            ticks: { color: "#71717a" },
-            grid: { color: "rgba(255,255,255,0.05)" },
+            ticks: { color: "#63636b" },
+            grid: { color: "rgba(255,255,255,0.04)" },
             beginAtZero: true,
           },
         },
