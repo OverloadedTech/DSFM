@@ -2,7 +2,7 @@
 {% block content %}
 <h1 class="section-title">Chat Attive</h1>
 
-<div class="action-row" style="margin-bottom:0.8rem;">
+<div class="action-row block-gap-small">
   <a class="btn {% if status == 'open' %}primary{% endif %}" href="{{ url_for('chats', status='open') }}">Aperte</a>
   <a class="btn {% if status == 'closed' %}primary{% endif %}" href="{{ url_for('chats', status='closed') }}">Chiuse</a>
   <a class="btn {% if status == 'all' %}primary{% endif %}" href="{{ url_for('chats', status='all') }}">Tutte</a>
@@ -21,8 +21,8 @@
         <span class="tag {% if row.status == 'open' %}ok{% elif row.status == 'closed' %}warn{% else %}err{% endif %}">{{ row.status|upper }}</span>
       </div>
       <div class="metric-sub">ID Chat #{{ row.id }} | Utente {{ row.user_id }} | Fonte: {{ row.source }}</div>
-      <div style="margin-top:0.35rem;">{{ row.last_message or 'Nessun messaggio' }}</div>
-      <div class="metric-sub" style="margin-top:0.3rem;">Ultimo aggiornamento: {{ row.updated_at|fmt_dt }}</div>
+      <div class="block-gap-small">{{ row.last_message or 'Nessun messaggio' }}</div>
+      <div class="metric-sub block-gap-small">Ultimo aggiornamento: {{ row.updated_at|fmt_dt }}</div>
     </a>
   {% else %}
     <div class="empty">Nessuna chat trovata</div>

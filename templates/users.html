@@ -2,7 +2,7 @@
 {% block content %}
 <h1 class="section-title">{% if view == "banned" %}Utenti Bannati{% else %}Utenti Bot{% endif %}</h1>
 
-<div class="action-row" style="margin-bottom:0.8rem;">
+<div class="action-row block-gap-small">
   <a class="btn {% if view == 'all' %}primary{% endif %}" href="{{ url_for('users_page') }}">
     Tutti ({{ counts.total_users }})
   </a>
@@ -11,7 +11,7 @@
   </a>
 </div>
 
-<div class="card" style="margin-bottom:0.8rem;">
+<div class="card block-gap-small">
   <form class="action-row" method="get" action="{{ url_for('banned_users_page' if view == 'banned' else 'users_page') }}">
     <input name="q" maxlength="120" value="{{ query }}" placeholder="Cerca per ID, username o nome">
     <button class="btn primary" type="submit">Cerca</button>

@@ -2,13 +2,13 @@
 {% block content %}
 <h1 class="section-title">Chat #{{ chat.id }}</h1>
 
-<div class="card" style="margin-bottom:1rem;">
+<div class="card block-gap-small">
   <div class="action-row" style="justify-content:space-between; align-items:flex-start;">
     <div>
       <h3 style="margin-bottom:0.3rem;">{{ chat.first_name or '' }} {{ chat.last_name or '' }} {% if chat.username %}(@{{ chat.username }}){% endif %}</h3>
       <div class="metric-sub">Utente ID: {{ chat.user_id }} | Fonte: {{ chat.source }} | Stato: {{ chat.status|upper }}</div>
       {% if chat.is_suspended %}
-        <div class="tag err" style="margin-top:0.5rem;">UTENTE BANNATO</div>
+        <div class="tag err block-gap-small">UTENTE BANNATO</div>
       {% endif %}
     </div>
 
@@ -88,14 +88,14 @@
       <textarea name="reply_text" maxlength="5000" placeholder="Scrivi una risposta per l'utente..." required></textarea>
     </div>
 
-    <div class="form-group" style="margin-top:0.6rem;">
+    <div class="form-group block-gap-small">
       <label>
         <input style="width:auto;" type="checkbox" name="internal_note" value="1">
         Nota interna (non inviare su Telegram)
       </label>
     </div>
 
-    <button class="btn primary" style="margin-top:0.8rem;">Invia Risposta</button>
+    <button class="btn primary block-gap-small">Invia Risposta</button>
   </form>
 </div>
 {% endblock %}

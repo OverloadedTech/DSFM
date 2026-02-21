@@ -2,12 +2,12 @@
 {% block content %}
 <h1 class="section-title">Log Attività</h1>
 
-<div class="action-row" style="margin-bottom:0.8rem;">
+<div class="action-row block-gap-small">
   <a class="btn" href="{{ url_for('logs_export', fmt='csv') }}">Esporta CSV</a>
   <a class="btn" href="{{ url_for('logs_export', fmt='json') }}">Esporta JSON</a>
 </div>
 
-<div class="card" style="margin-bottom:1rem;">
+<div class="card block-gap-small">
   <form method="get">
     <div class="form-grid">
       <div class="form-group">
@@ -50,14 +50,14 @@
         <input type="number" name="raw_lines" min="20" max="1000" value="{{ filters.raw_lines }}">
       </div>
     </div>
-    <div class="action-row" style="margin-top:0.8rem;">
+    <div class="action-row block-gap-small">
       <button class="btn primary" type="submit">Applica Filtri</button>
       <a class="btn" href="{{ url_for('logs_page') }}">Reset</a>
     </div>
   </form>
 </div>
 
-<div class="card" style="margin-bottom:1rem;">
+<div class="card block-gap-small">
   <h3 style="margin-top:0;">Log da File (tempo reale)</h3>
   <pre class="log-tail">{% for line in file_tail %}{{ line }}{% endfor %}{% if not file_tail %}Nessun dato nel file log.{% endif %}</pre>
 </div>
