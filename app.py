@@ -44,8 +44,14 @@ from flask import (
     session,
     url_for,
 )
+from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
+
+try:
+    from gunicorn.app.base import BaseApplication as _GunicornBase
+except ImportError:  # pragma: no cover
+    _GunicornBase = None
 
 try:
     import telebot
@@ -3015,6 +3021,17 @@ def load_config(config_path: str) -> dict[str, Any]:
                     "database_path = \"dsfm.sqlite3\"",
                     "ssl_cert = \"\"",
                     "ssl_key = \"\"",
+                    "# protocol: \"http\", \"https\", or \"both\" (http redirects to https)",
+                    "protocol = \"http\"",
+                    "# domain: optional domain/subdomain for this instance (e.g. shop.example.com)",
+                    "domain = \"\"",
+                    "# http_port / https_port: used when protocol = \"both\"",
+                    "http_port = 80",
+                    "https_port = 443",
+                    "# proxy_mode: set true when running behind a reverse proxy (nginx, caddy)",
+                    "proxy_mode = false",
+                    "# workers: number of Gunicorn worker processes (ignored in debug mode)",
+                    "workers = 2",
                     "",
                     "[security]",
                     "session_cookie_secure = false",
@@ -3049,6 +3066,12 @@ def load_config(config_path: str) -> dict[str, Any]:
     data["app"].setdefault("database_path", "dsfm.sqlite3")
     data["app"].setdefault("ssl_cert", "")
     data["app"].setdefault("ssl_key", "")
+    data["app"].setdefault("domain", "")
+    data["app"].setdefault("protocol", "http")
+    data["app"].setdefault("http_port", 80)
+    data["app"].setdefault("https_port", 443)
+    data["app"].setdefault("proxy_mode", False)
+    data["app"].setdefault("workers", 2)
 
     data["security"].setdefault("session_cookie_secure", False)
     data["security"].setdefault("session_cookie_samesite", "Strict")
@@ -3098,6 +3121,19 @@ def create_app(config_path: str | None = None, testing: bool = False, start_bot:
     app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(hours=8)
     app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
     app.config["TESTING"] = testing
+
+    protocol = sanitize_text(cfg["app"].get("protocol", "http"), 8).lower()
+    if protocol in ("https", "both"):
+        app.config["PREFERRED_URL_SCHEME"] = "https"
+
+    domain = sanitize_text(cfg["app"].get("domain", ""), 253)
+    if domain:
+        app.config["SERVER_NAME"] = domain
+
+    if to_bool(cfg["app"].get("proxy_mode", False)):
+        app.wsgi_app = ProxyFix(
+            app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1,
+        )
 
     db = Database(cfg["app"]["database_path"])
     db.init_schema()
@@ -4406,6 +4442,88 @@ def _resolve_local_ip() -> str | None:
         return None
 
 
+def _build_redirect_app(https_port: int, domain: str) -> Flask:
+    """Create a minimal WSGI app that redirects all HTTP requests to HTTPS."""
+    redirect_app = Flask("dsfm_redirect")
+
+    @redirect_app.route("/", defaults={"path": ""})
+    @redirect_app.route("/<path:path>")
+    def _redirect_to_https(path: str) -> Response:
+        target_host = domain or request.host.split(":")[0]
+        port_suffix = f":{https_port}" if https_port != 443 else ""
+        url = f"https://{target_host}{port_suffix}/{path}"
+        if request.query_string:
+            url = f"{url}?{request.query_string.decode()}"
+        return redirect(url, code=301)
+
+    return redirect_app
+
+
+def _log_access_urls(
+    log: logging.Logger,
+    host: str,
+    protocol: str,
+    port: int,
+    http_port: int,
+    https_port: int,
+    domain: str,
+) -> None:
+    """Log all access URLs on startup."""
+    if protocol == "http":
+        port_suffix = f":{port}" if port != 80 else ""
+        if domain:
+            log.info(" * http://%s%s", domain, port_suffix)
+        log.info(" * Serving HTTP on %s:%s", host, port)
+    elif protocol == "https":
+        port_suffix = f":{port}" if port != 443 else ""
+        if domain:
+            log.info(" * https://%s%s", domain, port_suffix)
+        log.info(" * Serving HTTPS on %s:%s", host, port)
+    elif protocol == "both":
+        http_suffix = f":{http_port}" if http_port != 80 else ""
+        https_suffix = f":{https_port}" if https_port != 443 else ""
+        if domain:
+            log.info(" * https://%s%s", domain, https_suffix)
+            log.info(" * http://%s%s (redirects to HTTPS)", domain, http_suffix)
+        log.info(" * Serving HTTPS on %s:%s", host, https_port)
+        log.info(" * Serving HTTP  on %s:%s (redirects to HTTPS)", host, http_port)
+
+    if host == "0.0.0.0":
+        local_ip = _resolve_local_ip()
+        ext_ip = _resolve_external_ip()
+        if protocol == "both":
+            suffix = f":{https_port}" if https_port != 443 else ""
+            if local_ip:
+                log.info(" * Local:    https://%s%s", local_ip, suffix)
+            if ext_ip:
+                log.info(" * External: https://%s%s", ext_ip, suffix)
+        else:
+            scheme = "https" if protocol == "https" else "http"
+            default_port = 443 if protocol == "https" else 80
+            suffix = f":{port}" if port != default_port else ""
+            if local_ip:
+                log.info(" * Local:    %s://%s%s", scheme, local_ip, suffix)
+            if ext_ip:
+                log.info(" * External: %s://%s%s", scheme, ext_ip, suffix)
+
+
+class _DsfmGunicorn(_GunicornBase):
+    """Thin Gunicorn application wrapper used by ``main()``."""
+
+    def __init__(self, app: Flask, options: dict[str, Any] | None = None):
+        self._app = app
+        self._options = options or {}
+        super().__init__()
+
+    def load_config(self) -> None:  # type: ignore[override]
+        for key, value in self._options.items():
+            if key in self.cfg.settings and value is not None:
+                self.cfg.set(key.lower(), value)
+
+    def load(self) -> Flask:
+        return self._app
+
+
 def main() -> None:
     config_path = os.environ.get(CONFIG_ENV, DEFAULT_CONFIG_PATH)
     app = create_app(config_path=config_path, testing=False, start_bot=True)
@@ -4413,6 +4531,11 @@ def main() -> None:
     host = cfg["app"].get("host", "0.0.0.0")
     port = int(cfg["app"].get("port", 8080))
     debug = bool(cfg["app"].get("debug", False))
+    protocol = sanitize_text(cfg["app"].get("protocol", "http"), 8).lower()
+    domain = sanitize_text(cfg["app"].get("domain", ""), 253)
+    http_port = int(cfg["app"].get("http_port", 80))
+    https_port = int(cfg["app"].get("https_port", 443))
+    workers = max(1, int(cfg["app"].get("workers", 2)))
 
     ssl_cert = cfg["app"].get("ssl_cert", "")
     ssl_key = cfg["app"].get("ssl_key", "")
@@ -4430,24 +4553,79 @@ def main() -> None:
                 ssl_key,
             )
 
-    scheme = "https" if ssl_context else "http"
+    if protocol in ("https", "both") and not ssl_context:
+        logging.getLogger("dsfm").error(
+            "protocol=%s requires ssl_cert and ssl_key to be set. Falling back to http.",
+            protocol,
+        )
+        protocol = "http"
+
     log = logging.getLogger("dsfm")
     log.setLevel(logging.INFO)
     if not log.handlers:
         log.addHandler(logging.StreamHandler())
 
     log.info(" * DSFM %s", APP_VERSION)
-    log.info(" * Serving on %s://%s:%s", scheme, host, port)
+    _log_access_urls(log, host, protocol, port, http_port, https_port, domain)
 
-    if host == "0.0.0.0":
-        local_ip = _resolve_local_ip()
-        if local_ip:
-            log.info(" * Local address: %s://%s:%s", scheme, local_ip, port)
-        ext_ip = _resolve_external_ip()
-        if ext_ip:
-            log.info(" * External address: %s://%s:%s", scheme, ext_ip, port)
+    # --- Debug / fallback mode: Flask development server ----------------------
+    if debug or _GunicornBase is None:
+        if _GunicornBase is None:
+            log.warning(" * Gunicorn not available — using Flask development server")
+        from werkzeug.serving import make_server
 
-    app.run(host=host, port=port, debug=debug, use_reloader=False, ssl_context=ssl_context)
+        if protocol == "both":
+            redirect_app = _build_redirect_app(https_port, domain)
+            redirect_server = make_server(host, http_port, redirect_app)
+            threading.Thread(
+                target=redirect_server.serve_forever,
+                name="http-redirect",
+                daemon=True,
+            ).start()
+            log.info(" * HTTP redirect server started")
+            app.run(host=host, port=https_port, debug=debug,
+                    use_reloader=False, ssl_context=ssl_context)
+        elif protocol == "https":
+            app.run(host=host, port=port, debug=debug,
+                    use_reloader=False, ssl_context=ssl_context)
+        else:
+            app.run(host=host, port=port, debug=debug, use_reloader=False)
+        return
+
+    # --- Production mode: Gunicorn --------------------------------------------
+    if protocol == "both":
+        serve_port = https_port
+    else:
+        serve_port = port
+
+    gunicorn_options: dict[str, Any] = {
+        "bind": f"{host}:{serve_port}",
+        "workers": workers,
+        "worker_class": "gthread",
+        "threads": 4,
+        "accesslog": "-",
+        "errorlog": "-",
+        "loglevel": "info",
+        "preload_app": False,
+    }
+
+    if ssl_context:
+        gunicorn_options["certfile"] = ssl_context[0]
+        gunicorn_options["keyfile"] = ssl_context[1]
+
+    if protocol == "both":
+        from werkzeug.serving import make_server
+        redirect_app = _build_redirect_app(https_port, domain)
+        redirect_server = make_server(host, http_port, redirect_app)
+        threading.Thread(
+            target=redirect_server.serve_forever,
+            name="http-redirect",
+            daemon=True,
+        ).start()
+        log.info(" * HTTP redirect server started")
+
+    log.info(" * Starting Gunicorn with %d workers", workers)
+    _DsfmGunicorn(app, gunicorn_options).run()
 
 
 if __name__ == "__main__":

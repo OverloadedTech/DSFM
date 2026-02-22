@@ -1,12 +1,13 @@
 # DSFM (DavShopFrameworkM)
 
-DSFM is a single-file Python 3 application (`app.py`) that runs in a single process:
+DSFM is a single-file Python 3 application (`app.py`) that combines:
 
 - **Flask admin panel** for managing the bot, users, orders, and support chats
 - **Telegram bot** (`pyTelegramBotAPI`) with tree-based menu navigation
 - **SQLite database** for persistent storage
+- **Gunicorn** production WSGI server (with Flask dev server fallback)
 
-Flask runs in the main thread while Telegram polling runs in a dedicated background thread.
+The Telegram bot runs in a dedicated background thread.
 
 ---
 
@@ -22,6 +23,7 @@ Flask runs in the main thread while Telegram polling runs in a dedicated backgro
 - [System Settings](#system-settings)
 - [Telegram Bot Commands](#telegram-bot-commands)
 - [Admin Panel Pages](#admin-panel-pages)
+- [Production Deployment](#production-deployment)
 - [Project Structure](#project-structure)
 - [Database](#database)
 - [Security Notes](#security-notes)
@@ -80,6 +82,9 @@ Alternatively, edit `config.toml` directly (not recommended for shared environme
 python app.py
 ```
 
+This starts the **Gunicorn** production server by default. When `debug = true`
+is set in `config.toml`, the Flask development server is used instead.
+
 On startup, DSFM prints the local and external IP addresses so you can
 easily find the correct URL when running on a cloud VM (OCI, Google Cloud, AWS, etc.).
 
@@ -113,6 +118,12 @@ The configuration file uses [TOML](https://toml.io) format. Copy `config.example
 | `database_path` | `dsfm.sqlite3` | Path to the SQLite database file |
 | `ssl_cert` | `""` | Path to an SSL certificate file to enable HTTPS |
 | `ssl_key` | `""` | Path to the corresponding SSL private key file |
+| `protocol` | `http` | Protocol mode: `http`, `https`, or `both` (see [Protocol Modes](#protocol-modes)) |
+| `domain` | `""` | Domain or subdomain for this instance (e.g. `shop.example.com`) |
+| `http_port` | `80` | HTTP port when `protocol = "both"` |
+| `https_port` | `443` | HTTPS port when `protocol = "both"` |
+| `proxy_mode` | `false` | Enable reverse proxy header handling (`X-Forwarded-For/Proto/Host`) |
+| `workers` | `2` | Gunicorn worker processes — recommended `(2 × CPU cores) + 1` (ignored when `debug = true`) |
 
 ### `[security]`
 
@@ -181,12 +192,125 @@ Menu buttons are configured in the admin panel and can perform one of these acti
 | `/logs` | Logs | Query structured activity logs with filters (level, source, action, text). View raw log file tail |
 | `/impostazioni` | Settings | System settings, admin account management, role management |
 
+## Production Deployment
+
+DSFM uses **Gunicorn** as the production WSGI server. When `debug = false`
+(the default), `python app.py` starts Gunicorn automatically. Set the number
+of worker processes with the `workers` option:
+
+```toml
+[app]
+workers = 5    # (2 × CPU cores) + 1 is a good starting point
+```
+
+When `debug = true`, the Flask development server is used instead for
+live reloading and debugging.
+
+### Protocol Modes
+
+The `protocol` setting in `[app]` controls how DSFM serves traffic:
+
+| Mode | Description |
+|------|-------------|
+| `http` | Serve HTTP only on `port` (default) |
+| `https` | Serve HTTPS only on `port` (requires `ssl_cert` and `ssl_key`) |
+| `both` | Serve HTTPS on `https_port` and automatically redirect HTTP on `http_port` to HTTPS |
+
+**HTTP only** (development or behind a reverse proxy):
+
+```toml
+[app]
+port = 8080
+protocol = "http"
+```
+
+**HTTPS only** (direct TLS termination):
+
+```toml
+[app]
+port = 443
+protocol = "https"
+ssl_cert = "/etc/letsencrypt/live/example.com/fullchain.pem"
+ssl_key  = "/etc/letsencrypt/live/example.com/privkey.pem"
+```
+
+**Both HTTP and HTTPS** (HTTPS with automatic HTTP redirect):
+
+```toml
+[app]
+protocol = "both"
+http_port = 80
+https_port = 443
+ssl_cert = "/etc/letsencrypt/live/example.com/fullchain.pem"
+ssl_key  = "/etc/letsencrypt/live/example.com/privkey.pem"
+```
+
+### Domain / Subdomain Binding
+
+Set the `domain` option to bind the instance to a specific domain or subdomain:
+
+```toml
+[app]
+domain = "shop.example.com"
+```
+
+When left empty, the app responds to any hostname (useful for IP-only access).
+
+### Custom Domain via Cloudflare or Other DNS Providers
+
+To point a custom domain or subdomain to your DSFM instance:
+
+1. Create an **A record** in your DNS provider pointing to your server's public IP
+2. Configure Nginx to handle the domain with TLS
+3. Set `proxy_mode = true` and `domain` in DSFM's config
+
+See [`deploy/cloudflare.md`](deploy/cloudflare.md) for a complete walkthrough
+covering Cloudflare, Let's Encrypt, and other DNS providers.
+
+### Behind a Reverse Proxy (Recommended for Production)
+
+For production, running behind **Nginx** or **Caddy** is recommended. The reverse proxy handles TLS termination and allows multiple Flask apps on the same machine.
+
+1. Set `proxy_mode = true` so DSFM trusts `X-Forwarded-*` headers:
+
+```toml
+[app]
+port = 8080
+protocol = "http"
+proxy_mode = true
+domain = "shop.example.com"
+
+[security]
+session_cookie_secure = true
+```
+
+2. Configure your reverse proxy — see [`deploy/nginx.example.conf`](deploy/nginx.example.conf) for ready-to-use examples.
+
+### Multi-Site Hosting
+
+To run multiple Flask sites on a single machine, each instance needs:
+
+- A **unique port** in its `config.toml`
+- A **unique domain/subdomain** (optional, for reverse proxy routing)
+- A **separate database** (default is fine if run from different directories)
+
+Example layout:
+
+| Instance | Port | Domain | Config |
+|----------|------|--------|--------|
+| DSFM shop | 5001 | `shop.example.com` | `~/shop/config.toml` |
+| DSFM blog | 5002 | `blog.example.com` | `~/blog/config.toml` |
+| Other app | 5003 | `api.example.com` | — |
+
+Then configure Nginx to route each subdomain to the correct port. See Example 3 in [`deploy/nginx.example.conf`](deploy/nginx.example.conf).
+
 ## Project Structure
 
 ```
 app.py                  # Full application + bot logic
 config.example.toml     # Configuration template
 requirements.txt        # Python dependencies
+deploy/                 # Nginx reverse proxy examples and DNS/Cloudflare guide
 templates/              # HTML templates for the admin panel
 static/                 # CSS and JavaScript assets
 logs/                   # Runtime log files (generated)
@@ -229,7 +353,8 @@ cp -r logs/ "backups/logs-$(date +%F)/"
 - If a bot token has been exposed publicly, regenerate it immediately via [BotFather](https://t.me/BotFather)
 - Use a strong, stable `DSFM_SECRET_KEY` — changing it invalidates all active sessions
 - Enable HTTPS and set `session_cookie_secure = true` in production
-- For native HTTPS, set `ssl_cert` and `ssl_key` in `config.toml` pointing to your certificate and key files
+- For native HTTPS, set `ssl_cert` and `ssl_key` in `config.toml`, or use `protocol = "both"` to serve HTTPS with automatic HTTP redirect
+- Use `proxy_mode = true` when behind a reverse proxy so DSFM correctly reads client IPs and protocol
 - All admin POST requests are protected by CSRF tokens
 - Passwords are hashed using Werkzeug's password hashing utilities
 - Back up `dsfm.sqlite3` and `logs/` regularly
@@ -245,3 +370,5 @@ cp -r logs/ "backups/logs-$(date +%F)/"
 | Sessions lost on restart | Ensure `DSFM_SECRET_KEY` (or `secret_key` in config) stays the same across restarts. If unset, a random key is generated and stored in `.dsfm_secret_key` |
 | Database locked errors | Ensure only one instance of the app is running against the same database file |
 | Port already in use | Change the `port` value in `config.toml` or stop the conflicting process |
+| HTTPS not working | Ensure `ssl_cert` and `ssl_key` point to valid files and `protocol` is set to `https` or `both` |
+| Wrong client IP in logs | Set `proxy_mode = true` when behind a reverse proxy |
