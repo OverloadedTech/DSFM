@@ -4,9 +4,29 @@ port = 8080
 secret_key = ""
 debug = false
 database_path = "dsfm.sqlite3"
+
 # Optional: paths to SSL certificate and key to enable HTTPS
 ssl_cert = ""
 ssl_key = ""
+
+# Protocol mode: "http", "https", or "both"
+# - "http":  serve HTTP only on `port`
+# - "https": serve HTTPS only on `port` (requires ssl_cert and ssl_key)
+# - "both":  serve HTTPS on `https_port` and redirect HTTP on `http_port`
+protocol = "http"
+
+# Optional domain or subdomain for this instance (e.g. "shop.example.com").
+# When set behind a reverse proxy, this tells Flask which hostname to expect.
+# Leave empty when accessing by IP address only.
+domain = ""
+
+# Ports used when protocol = "both":
+http_port = 80
+https_port = 443
+
+# Set to true when running behind a reverse proxy (nginx, Caddy, etc.)
+# This enables proper handling of X-Forwarded-For/Proto/Host headers.
+proxy_mode = false
 
 [security]
 session_cookie_secure = false
