@@ -24,6 +24,7 @@ env/
 logs/
 uploads/
 exports/
+gunicorn.ctl
 
 # Secrets
 .dsfm_secret_key

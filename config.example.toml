@@ -28,6 +28,10 @@ https_port = 443
 # This enables proper handling of X-Forwarded-For/Proto/Host headers.
 proxy_mode = false
 
+# Number of Gunicorn worker processes (ignored when debug = true).
+# A good default is (2 × CPU cores) + 1.
+workers = 2
+
 [security]
 session_cookie_secure = false
 session_cookie_samesite = "Strict"

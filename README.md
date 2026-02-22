@@ -1,12 +1,13 @@
 # DSFM (DavShopFrameworkM)
 
-DSFM is a single-file Python 3 application (`app.py`) that runs in a single process:
+DSFM is a single-file Python 3 application (`app.py`) that combines:
 
 - **Flask admin panel** for managing the bot, users, orders, and support chats
 - **Telegram bot** (`pyTelegramBotAPI`) with tree-based menu navigation
 - **SQLite database** for persistent storage
+- **Gunicorn** production WSGI server (with Flask dev server fallback)
 
-Flask runs in the main thread while Telegram polling runs in a dedicated background thread.
+The Telegram bot runs in a dedicated background thread.
 
 ---
 
@@ -81,6 +82,9 @@ Alternatively, edit `config.toml` directly (not recommended for shared environme
 python app.py
 ```
 
+This starts the **Gunicorn** production server by default. When `debug = true`
+is set in `config.toml`, the Flask development server is used instead.
+
 On startup, DSFM prints the local and external IP addresses so you can
 easily find the correct URL when running on a cloud VM (OCI, Google Cloud, AWS, etc.).
 
@@ -119,6 +123,7 @@ The configuration file uses [TOML](https://toml.io) format. Copy `config.example
 | `http_port` | `80` | HTTP port when `protocol = "both"` |
 | `https_port` | `443` | HTTPS port when `protocol = "both"` |
 | `proxy_mode` | `false` | Enable reverse proxy header handling (`X-Forwarded-For/Proto/Host`) |
+| `workers` | `2` | Gunicorn worker processes — recommended `(2 × CPU cores) + 1` (ignored when `debug = true`) |
 
 ### `[security]`
 
@@ -189,6 +194,18 @@ Menu buttons are configured in the admin panel and can perform one of these acti
 
 ## Production Deployment
 
+DSFM uses **Gunicorn** as the production WSGI server. When `debug = false`
+(the default), `python app.py` starts Gunicorn automatically. Set the number
+of worker processes with the `workers` option:
+
+```toml
+[app]
+workers = 5    # (2 × CPU cores) + 1 is a good starting point
+```
+
+When `debug = true`, the Flask development server is used instead for
+live reloading and debugging.
+
 ### Protocol Modes
 
 The `protocol` setting in `[app]` controls how DSFM serves traffic:
@@ -239,6 +256,17 @@ domain = "shop.example.com"
 
 When left empty, the app responds to any hostname (useful for IP-only access).
 
+### Custom Domain via Cloudflare or Other DNS Providers
+
+To point a custom domain or subdomain to your DSFM instance:
+
+1. Create an **A record** in your DNS provider pointing to your server's public IP
+2. Configure Nginx to handle the domain with TLS
+3. Set `proxy_mode = true` and `domain` in DSFM's config
+
+See [`deploy/cloudflare.md`](deploy/cloudflare.md) for a complete walkthrough
+covering Cloudflare, Let's Encrypt, and other DNS providers.
+
 ### Behind a Reverse Proxy (Recommended for Production)
 
 For production, running behind **Nginx** or **Caddy** is recommended. The reverse proxy handles TLS termination and allows multiple Flask apps on the same machine.
@@ -282,7 +310,7 @@ Then configure Nginx to route each subdomain to the correct port. See Example 3 
 app.py                  # Full application + bot logic
 config.example.toml     # Configuration template
 requirements.txt        # Python dependencies
-deploy/                 # Nginx reverse proxy example configs
+deploy/                 # Nginx reverse proxy examples and DNS/Cloudflare guide
 templates/              # HTML templates for the admin panel
 static/                 # CSS and JavaScript assets
 logs/                   # Runtime log files (generated)

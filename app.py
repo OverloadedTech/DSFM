@@ -46,8 +46,12 @@ from flask import (
 )
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.security import check_password_hash, generate_password_hash
-from werkzeug.serving import make_server
 from werkzeug.utils import secure_filename
+
+try:
+    from gunicorn.app.base import BaseApplication as _GunicornBase
+except ImportError:  # pragma: no cover
+    _GunicornBase = None
 
 try:
     import telebot
@@ -3026,6 +3030,8 @@ def load_config(config_path: str) -> dict[str, Any]:
                     "https_port = 443",
                     "# proxy_mode: set true when running behind a reverse proxy (nginx, caddy)",
                     "proxy_mode = false",
+                    "# workers: number of Gunicorn worker processes (ignored in debug mode)",
+                    "workers = 2",
                     "",
                     "[security]",
                     "session_cookie_secure = false",
@@ -3065,6 +3071,7 @@ def load_config(config_path: str) -> dict[str, Any]:
     data["app"].setdefault("http_port", 80)
     data["app"].setdefault("https_port", 443)
     data["app"].setdefault("proxy_mode", False)
+    data["app"].setdefault("workers", 2)
 
     data["security"].setdefault("session_cookie_secure", False)
     data["security"].setdefault("session_cookie_samesite", "Strict")
@@ -4500,6 +4507,23 @@ def _log_access_urls(
                 log.info(" * External: %s://%s%s", scheme, ext_ip, suffix)
 
 
+class _DsfmGunicorn(_GunicornBase):
+    """Thin Gunicorn application wrapper used by ``main()``."""
+
+    def __init__(self, app: Flask, options: dict[str, Any] | None = None):
+        self._app = app
+        self._options = options or {}
+        super().__init__()
+
+    def load_config(self) -> None:  # type: ignore[override]
+        for key, value in self._options.items():
+            if key in self.cfg.settings and value is not None:
+                self.cfg.set(key.lower(), value)
+
+    def load(self) -> Flask:
+        return self._app
+
+
 def main() -> None:
     config_path = os.environ.get(CONFIG_ENV, DEFAULT_CONFIG_PATH)
     app = create_app(config_path=config_path, testing=False, start_bot=True)
@@ -4511,6 +4535,7 @@ def main() -> None:
     domain = sanitize_text(cfg["app"].get("domain", ""), 253)
     http_port = int(cfg["app"].get("http_port", 80))
     https_port = int(cfg["app"].get("https_port", 443))
+    workers = max(1, int(cfg["app"].get("workers", 2)))
 
     ssl_cert = cfg["app"].get("ssl_cert", "")
     ssl_key = cfg["app"].get("ssl_key", "")
@@ -4543,41 +4568,64 @@ def main() -> None:
     log.info(" * DSFM %s", APP_VERSION)
     _log_access_urls(log, host, protocol, port, http_port, https_port, domain)
 
+    # --- Debug / fallback mode: Flask development server ----------------------
+    if debug or _GunicornBase is None:
+        if _GunicornBase is None:
+            log.warning(" * Gunicorn not available — using Flask development server")
+        from werkzeug.serving import make_server
+
+        if protocol == "both":
+            redirect_app = _build_redirect_app(https_port, domain)
+            redirect_server = make_server(host, http_port, redirect_app)
+            threading.Thread(
+                target=redirect_server.serve_forever,
+                name="http-redirect",
+                daemon=True,
+            ).start()
+            log.info(" * HTTP redirect server started")
+            app.run(host=host, port=https_port, debug=debug,
+                    use_reloader=False, ssl_context=ssl_context)
+        elif protocol == "https":
+            app.run(host=host, port=port, debug=debug,
+                    use_reloader=False, ssl_context=ssl_context)
+        else:
+            app.run(host=host, port=port, debug=debug, use_reloader=False)
+        return
+
+    # --- Production mode: Gunicorn --------------------------------------------
     if protocol == "both":
-        # Run HTTP→HTTPS redirect server in a background thread
+        serve_port = https_port
+    else:
+        serve_port = port
+
+    gunicorn_options: dict[str, Any] = {
+        "bind": f"{host}:{serve_port}",
+        "workers": workers,
+        "worker_class": "gthread",
+        "threads": 4,
+        "accesslog": "-",
+        "errorlog": "-",
+        "loglevel": "info",
+        "preload_app": False,
+    }
+
+    if ssl_context:
+        gunicorn_options["certfile"] = ssl_context[0]
+        gunicorn_options["keyfile"] = ssl_context[1]
+
+    if protocol == "both":
+        from werkzeug.serving import make_server
         redirect_app = _build_redirect_app(https_port, domain)
         redirect_server = make_server(host, http_port, redirect_app)
-        redirect_thread = threading.Thread(
+        threading.Thread(
             target=redirect_server.serve_forever,
             name="http-redirect",
             daemon=True,
-        )
-        redirect_thread.start()
+        ).start()
         log.info(" * HTTP redirect server started")
-        # Main thread serves HTTPS
-        app.run(
-            host=host,
-            port=https_port,
-            debug=debug,
-            use_reloader=False,
-            ssl_context=ssl_context,
-        )
-    elif protocol == "https":
-        app.run(
-            host=host,
-            port=port,
-            debug=debug,
-            use_reloader=False,
-            ssl_context=ssl_context,
-        )
-    else:
-        # protocol == "http" (default)
-        app.run(
-            host=host,
-            port=port,
-            debug=debug,
-            use_reloader=False,
-        )
+
+    log.info(" * Starting Gunicorn with %d workers", workers)
+    _DsfmGunicorn(app, gunicorn_options).run()
 
 
 if __name__ == "__main__":
